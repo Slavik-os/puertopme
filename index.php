@@ -10,19 +10,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-2.2.4/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
     <title>Document</title>
 </head>
 <body>
 
+<style>
+  td img {
+    width : 50px;
+    height : 50px;
+    border-radius : 50%;
+    object-fit : contain ;
+  }
+  table th , table td {
+    font-size : 12px;
+  }
+
+  .fa {
+    font-size :14px;
+  }
+  #tab_filter input[type=search]{
+    margin-right :50px;
+    border-radius: 0.25em !important;
+    border : 0.5px solid rgb(206, 212, 218);
+    outline : none ;
+    padding : 0.275em 0.75em;
+    color : #495057 ;
+  }
+  #tab_length label ,#tab_info{
+    font-size : 15px;
+  }
+  .fa {
+    cursor: pointer;
+  }
+  @media screen and (max-width:700px) {
+    body {
+    
+    }
+    .main-menu {
+      height :130%;
+    }
+    #tab_length label ,#tab_info,#tab_paginate{
+    font-size : 12px;
+  }
+  #tab_filter input[type=search]{
+    width : 100px;
+    border-radius: 0.25em !important;
+    border : 0.5px solid rgb(206, 212, 218);
+    outline : none ;
+    padding : 0.375em 0.75em;
+    color : #495057 ;
+  }
+  }
+</style>
 <?php
 session_start();
 if(isset($_SESSION['username'])) {
     if ($_SESSION['role']=='responsable'){?>
 
 <div class="row">
-<nav class="navbar navbar_v justify-content-between flex-nowrap" style="background:#22262F;border:none;position:; ;width:100% !important; z-index:5;">
+<nav class="navbar navbar_v justify-content-between flex-nowrap" style="background:#212121;border:none;position:; ;width:100% !important; z-index:5;">
 <a class="navbar-brand" href="#">
     <img src="assets/imgs/general-icon.png" width="40" height="40" class="d-inline-block align-top" alt="">
     <span class="nav-text" style="font-family:'Titillium Web'"> PUERTO TRANSIT </span>
@@ -32,13 +89,12 @@ if(isset($_SESSION['username'])) {
     <img src="assets/imgs/default_login.png" alt=""> 
     <span class="user_id" style="color : #8391A3;"><?php echo $_SESSION['username'];?></span>
   </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" ">
+  <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
     <a class="dropdown-item hover-drop" href="#" ">LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
   </div>
 </div>
 </nav>
 </div>
-
 <div class="area" ></div>
 <nav class="main-menu" style="z-index:1;flex-nowrap">
             <ul>
@@ -133,7 +189,7 @@ if(isset($_SESSION['username'])) {
         </nav>
 <div class="boxParent" style="margin: 10px 90px;">
     <h1 class="txt-header">Ajouter des Employés</h1>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Ajouter </button>
+    <button type="button" class="btn btn-primary my-3 px-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Ajouter </button>
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -143,6 +199,7 @@ if(isset($_SESSION['username'])) {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <!-- Add employee Modal !-->
       <div class="modal-body">
         <form>
           <div class="form-group">
@@ -150,77 +207,76 @@ if(isset($_SESSION['username'])) {
             <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Mattricule:</label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..."  name="matricule">
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Nom:</label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..."  name="firstName">
               </div><!--  row end -->
             </div>
             <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Prénom:</label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..." name="lastname">
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Email:</label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..." name="email">
+              </div>
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Mode de pass :</label>
+                <input type="password" class="form-control" placeholder="..." name="password">
               </div>
             </div><!--  row end -->
             <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">CIN:</label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..." name="cin">
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Date d'embauche:</label>
-                <input type="date" class="form-control" placeholder="..." id="recipient-name">
+                <input type="date" class="form-control" placeholder="..." name="date_em">
               </div>
             </div><!--  row end -->
             <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Address:</label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..." name="address">
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Photo:</label>
-                <input type="file" class="form-control" placeholder="..." id="recipient-name">
+                <input type="file" class="form-control" placeholder="..." name="photo">
                 </div> <!--  row end -->
           </div>
-          <h5 class="modal-title modal-title-text" id="exampleModalLabel">Information Contact</h5>
+          <h5 class="modal-title modal-title-text"el">Information Contact</h5>
           <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Numero (Portable) : </label>
-                <input type="phone" class="form-control" placeholder="..." id="recipient-name">
+                <input type="phone" class="form-control" placeholder="..." name="phone_portable">
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Numero d’extention : </label>
-                <input type="phone" class="form-control" placeholder="..." id="recipient-name">
+                <input type="phone" class="form-control" placeholder="..." name="numero_extenetsion">
               </div>
             </div><!--  row end -->
             <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Fix direct : </label>
-                <input type="phone" class="form-control" placeholder="..." id="recipient-name">
+                <input type="phone" class="form-control" placeholder="..." name="numero_fix">
               </div>
             </div><!--  row end -->
-            <h5 class="modal-title modal-title-text" id="exampleModalLabel">Information Personnel</h5>
-            <h5 class="modal-title modal-title-text" id="exampleModalLabel">Information Contact</h5>
+            <h5 class="modal-title modal-title-text"exampleModalLabel">Information Contact</h5>
           <div class="row">
               <div class="col-md-6">
-                <label for="recipient-name" class="col-form-label">Département : </label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
-              </div>
-              <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Fonction : </label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..." name="fonction">
               </div>
           </div><!--  row end -->
           <div class="row">
               <div class="col-md-6">
-                <label for="recipient-name" class="col-form-label">Résponsable : </label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected disabled>Selectionner un responsable</option>
+                <label for="recipient-name" class="col-form-label">Département : </label>
+                <select class="form-select" aria-label="Default select example" name="departement">
+                  <option selected disabled>Selectionner une Département</option>
                   <option value="It">IT</option>
                   <option value="Rh">RH</option>
                   <option value="Finance">Finance</option>
@@ -228,13 +284,13 @@ if(isset($_SESSION['username'])) {
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Bureaux : </label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..."  name="bureaux">
               </div>
           </div><!--  row end -->
           <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Post : </label>
-                <input type="text" class="form-control" placeholder="..." id="recipient-name">
+                <input type="text" class="form-control" placeholder="..."  name="post">
               </div>
           </div><!--  row end -->
         </form>
@@ -247,271 +303,90 @@ if(isset($_SESSION['username'])) {
       </div>
       </div>
      </div> <!-- modal End -->
-   
-     <table id="tab" class="table table-striped stripe row-border order-column" cellspacing="3" width="100%">
+     <!-- Add employee Modal End!-->
+      
+     <!-- edit Modal -->
+     <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+     <!-- edit Modal end -->
+
+<!-- delete Modal -->
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- delete Modal end -->
+
+
+      <div class="table-responsive mt-4">
+     <table id="tab" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-                <th>Extn.</th>
-                <th>E-mail</th>
+                <th>Matricule</th>
+                <th>Photo</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>CIN</th>
+                <th>Email</th>
+	            	<th>Address</th>
+                <th>Département</th>
+                <th>Résponsable</th>
+                <th>Fonction</th>
+                <th>Post</th>
+                <th>Bureaux</th>
+                <th>Numero</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>Tiger</td>
-                <td>Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-                <td>5421</td>
-                <td>t.nixon@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Garrett</td>
-                <td>Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>$170,750</td>
-                <td>8422</td>
-                <td>g.winters@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Ashton</td>
-                <td>Cox</td>
-                <td>Junior Technical Author</td>
-                <td>San Francisco</td>
-                <td>66</td>
-                <td>2009/01/12</td>
-                <td>$86,000</td>
-                <td>1562</td>
-                <td>a.cox@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Cedric</td>
-                <td>Kelly</td>
-                <td>Senior Javascript Developer</td>
-                <td>Edinburgh</td>
-                <td>22</td>
-                <td>2012/03/29</td>
-                <td>$433,060</td>
-                <td>6224</td>
-                <td>c.kelly@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Airi</td>
-                <td>Satou</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>33</td>
-                <td>2008/11/28</td>
-                <td>$162,700</td>
-                <td>5407</td>
-                <td>a.satou@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Brielle</td>
-                <td>Williamson</td>
-                <td>Integration Specialist</td>
-                <td>New York</td>
-                <td>61</td>
-                <td>2012/12/02</td>
-                <td>$372,000</td>
-                <td>4804</td>
-                <td>b.williamson@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Herrod</td>
-                <td>Chandler</td>
-                <td>Sales Assistant</td>
-                <td>San Francisco</td>
-                <td>59</td>
-                <td>2012/08/06</td>
-                <td>$137,500</td>
-                <td>9608</td>
-                <td>h.chandler@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Rhona</td>
-                <td>Davidson</td>
-                <td>Integration Specialist</td>
-                <td>Tokyo</td>
-                <td>55</td>
-                <td>2010/10/14</td>
-                <td>$327,900</td>
-                <td>6200</td>
-                <td>r.davidson@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Colleen</td>
-                <td>Hurst</td>
-                <td>Javascript Developer</td>
-                <td>San Francisco</td>
-                <td>39</td>
-                <td>2009/09/15</td>
-                <td>$205,500</td>
-                <td>2360</td>
-                <td>c.hurst@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Sonya</td>
-                <td>Frost</td>
-                <td>Software Engineer</td>
-                <td>Edinburgh</td>
-                <td>23</td>
-                <td>2008/12/13</td>
-                <td>$103,600</td>
-                <td>1667</td>
-                <td>s.frost@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Jena</td>
-                <td>Gaines</td>
-                <td>Office Manager</td>
-                <td>London</td>
-                <td>30</td>
-                <td>2008/12/19</td>
-                <td>$90,560</td>
-                <td>3814</td>
-                <td>j.gaines@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Quinn</td>
-                <td>Flynn</td>
-                <td>Support Lead</td>
-                <td>Edinburgh</td>
-                <td>22</td>
-                <td>2013/03/03</td>
-                <td>$342,000</td>
-                <td>9497</td>
-                <td>q.flynn@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Charde</td>
-                <td>Marshall</td>
-                <td>Regional Director</td>
-                <td>San Francisco</td>
-                <td>36</td>
-                <td>2008/10/16</td>
-                <td>$470,600</td>
-                <td>6741</td>
-                <td>c.marshall@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Haley</td>
-                <td>Kennedy</td>
-                <td>Senior Marketing Designer</td>
-                <td>London</td>
-                <td>43</td>
-                <td>2012/12/18</td>
-                <td>$313,500</td>
-                <td>3597</td>
-                <td>h.kennedy@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Tatyana</td>
-                <td>Fitzpatrick</td>
-                <td>Regional Director</td>
-                <td>London</td>
-                <td>19</td>
-                <td>2010/03/17</td>
-                <td>$385,750</td>
-                <td>1965</td>
-                <td>t.fitzpatrick@datatables.net</td>
-            </tr>
-           
-            <tr>
-                <td>Cara</td>
-                <td>Stevens</td>
-                <td>Sales Assistant</td>
-                <td>New York</td>
-                <td>46</td>
-                <td>2011/12/06</td>
-                <td>$145,600</td>
-                <td>3990</td>
-                <td>c.stevens@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Hermione</td>
-                <td>Butler</td>
-                <td>Regional Director</td>
-                <td>London</td>
-                <td>47</td>
-                <td>2011/03/21</td>
-                <td>$356,250</td>
-                <td>1016</td>
-                <td>h.butler@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Lael</td>
-                <td>Greer</td>
-                <td>Systems Administrator</td>
-                <td>London</td>
-                <td>21</td>
-                <td>2009/02/27</td>
-                <td>$103,500</td>
-                <td>6733</td>
-                <td>l.greer@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Jonas</td>
-                <td>Alexander</td>
-                <td>Developer</td>
-                <td>San Francisco</td>
-                <td>30</td>
-                <td>2010/07/14</td>
-                <td>$86,500</td>
-                <td>8196</td>
-                <td>j.alexander@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Shad</td>
-                <td>Decker</td>
-                <td>Regional Director</td>
-                <td>Edinburgh</td>
-                <td>51</td>
-                <td>2008/11/13</td>
-                <td>$183,000</td>
-                <td>6373</td>
-                <td>s.decker@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Michael</td>
-                <td>Bruce</td>
-                <td>Javascript Developer</td>
-                <td>Singapore</td>
-                <td>29</td>
-                <td>2011/06/27</td>
-                <td>$183,000</td>
-                <td>5384</td>
-                <td>m.bruce@datatables.net</td>
-            </tr>
-            <tr>
-                <td>Donna</td>
-                <td>Snider</td>
-                <td>Customer Support</td>
-                <td>New York</td>
-                <td>27</td>
-                <td>2011/01/25</td>
-                <td>$112,000</td>
-                <td>4226</td>
-                <td>d.snider@datatables.net</td>
-            </tr>
-        </tbody>
+        <!-- <tbody id="ttab">
+        </tbody> -->
     </table>
-
-
-
-
+    </div>
   </div> <!-- Parent Box End -->
 
 
@@ -535,17 +410,50 @@ if(isset($_SESSION['username'])) {
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
-    <script type="text/javascript">
-$(document).ready(function() {
-    var table = $('#tab').DataTable( {
-        scrollY:        "400px",
-        scrollX:        true,
-        scrollCollapse: false,
-        paging:         false,
-        fixedColumns:   {
-            leftColumns: 1,
+<script type="text/javascript" src="assets/js/main.js"></script>
+<script type="text/javascript">
+   $(document).ready(()=>{
+        $("#tab").DataTable({
+          "ajax":{
+            'url':"inc/src.php",
+            'method':"post",
+            "dataSrc" :"",
+          },
+          "columns":[
+            {data:"matricule"},
+            {data:"photo"},
+            {data:"firstName"},
+            {data:"lastname"},
+            {data:"cin"},
+            {data:"email"},
+            {data:"address"},
+            {data:"departement"},
+            {data:"responsable_name"},
+            {data:"fonction"},
+            {data:"post"},
+            {data:"burreaux"},
+            {data:"phone_portable"},
+            {
+                data: null,
+                className: "dt-center editor-delete",
+                defaultContent: '<i class="fa fa-pencil" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>',
+                orderable: false
+            },{
+                data: null,
+                className: "dt-center editor-edit",
+                defaultContent: '<i class="fa fa-trash"  data-toggle="modal" data-target="#exampleModal3"/>',
+                orderable: false
+            }            
+          ],  
         }
-    } );
+        )});
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#tab tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
 });
 </script>
 </body>

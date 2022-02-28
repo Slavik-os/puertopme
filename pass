@@ -1,1 +1,2 @@
-test
+INSERT INTO employes_tbl VALUES(NULL,'test','d8e8fca2dc0f896fd7cb4cb0031ba249','123','','IT','akram','el kalkha','thespacebirds@gmail.com','L660399',str_to_date('09-12-2021','%m-%d-%Y'),'','','','','','','','','','');
+

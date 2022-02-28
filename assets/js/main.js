@@ -1,11 +1,7 @@
-$(document).ready(function() {
-    var table = $('#tab').DataTable( {
-        scrollY:        "400px",
-        scrollX:        true,
-        scrollCollapse: false,
-        paging:         false,
-        fixedColumns:   {
-            leftColumns: 1,
-        }
-    } );
-});
+let edit = (elem)=>{
+    console.log('workign');
+}
+
+let remove = (elem)=>{
+    console.log('workign not');
+}

@@ -10,11 +10,51 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.css">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="main.css">
     <title>Document</title>
 </head>
 <body>
 
+<style>
+
+.backgroundimg {
+    min-height: 100vh;
+    width: 100%;
+    background-image : url('assets/imgs/login-background.png');
+    background-size : cover ;
+    background-position : center center;
+    background-repeat: no-repeat;
+}
+.logo {padding : 22px;}
+.logo img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+.fa-user , .fa-lock{
+  color : #fff;
+}
+.welcometext {
+    font-size: 30px;
+    color : #fff !important;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.submit-input{
+    background-color : #3D77FF;
+    outline: none !important;
+    border: none !important;
+    color :#fff;
+}
+.icon-append ,.input-group-text{
+    background-color : #3D77FF;
+    outline: none !important;
+    border: none !important;
+    height: 100%;
+    width: 100%;
+    text-align: center !important;
+}
+
+</style>
 <div class="col-md-12 backgroundimg">
     <div class="logo">
        <img src="assets/imgs/general-icon.png" alt="">
@@ -70,15 +110,13 @@
             <?php 
             if (isset($_GET['error'])){
                 echo '
-                <div class="container-fluid pt-4 text-center h-75 text-dark "><div class="row">
+                <span class="container pt-4 text-center h-75 text-dark "><div class="row">
                     <div class="col-lg-4"></div>
                     <div class="col-lg-4">
                     <div class="alert alert-danger">
                         '.$_GET['error'].'
                     </div>
-                        </div><!-- /input-group -->
-                    </div><!-- /.col-lg-4 -->
-                    <div class="col-lg-4"></div>
+                        </span><!-- /input-group -->
                     ';
             }
             ?>
