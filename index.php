@@ -33,7 +33,7 @@
     object-fit : contain ;
   }
   table th , table td {
-    font-size : 12px;
+    font-size : 10px;
   }
 
   .fa {
@@ -53,12 +53,12 @@
   .fa {
     cursor: pointer;
   }
-  @media screen and (max-width:700px) {
+  @media screen and (max-width:1460px) {
     body {
     
     }
     .main-menu {
-      height :130%;
+      height :150% !important;
     }
     #tab_length label ,#tab_info,#tab_paginate{
     font-size : 12px;
@@ -90,7 +90,7 @@ if(isset($_SESSION['username'])) {
     <span class="user_id" style="color : #8391A3;"><?php echo $_SESSION['username'];?></span>
   </button>
   <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
-    <a class="dropdown-item hover-drop" href="#" ">LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    <a class="dropdown-item hover-drop" href="logout.php" ">LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
   </div>
 </div>
 </nav>
@@ -178,7 +178,7 @@ if(isset($_SESSION['username'])) {
 
             <ul class="logout">
                 <li>
-                   <a href="#">
+                   <a href="logout.php">
                          <i class="fa fa-power-off fa-2x"></i>
                         <span class="nav-text">
                             Logout
@@ -188,7 +188,7 @@ if(isset($_SESSION['username'])) {
             </ul>
         </nav>
 <div class="boxParent" style="margin: 10px 90px;">
-    <h1 class="txt-header">Ajouter des Employés</h1>
+    <h1 class="txt-header" style="font-family:'Open Sans'">Ajouter des Employés</h1>
     <button type="button" class="btn btn-primary my-3 px-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Ajouter </button>
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
@@ -201,7 +201,7 @@ if(isset($_SESSION['username'])) {
       </div>
       <!-- Add employee Modal !-->
       <div class="modal-body">
-        <form>
+        <form  action=" add.php" method="post" enctype="multipart/form-data">
           <div class="form-group">
           <h5 class="modal-title modal-title-text" id="exampleModalLabel">Information Personnel</h5>
             <div class="row">
@@ -224,6 +224,10 @@ if(isset($_SESSION['username'])) {
                 <input type="text" class="form-control" placeholder="..." name="email">
               </div>
               <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Nom d'utilisateur :</label>
+                <input type="text" class="form-control" placeholder="..." name="username">
+              </div>
+              <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Mode de pass :</label>
                 <input type="password" class="form-control" placeholder="..." name="password">
               </div>
@@ -234,7 +238,7 @@ if(isset($_SESSION['username'])) {
                 <input type="text" class="form-control" placeholder="..." name="cin">
               </div>
               <div class="col-md-6">
-                <label for="recipient-name" class="col-form-label">Date d'embauche:</label>
+                <label for="recipient-name" class="col-form-label">Date ad'embauche:</label>
                 <input type="date" class="form-control" placeholder="..." name="date_em">
               </div>
             </div><!--  row end -->
@@ -245,7 +249,7 @@ if(isset($_SESSION['username'])) {
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Photo:</label>
-                <input type="file" class="form-control" placeholder="..." name="photo">
+                <input type="file" class="form-control" placeholder="..." name="fileToUpload" id="fileToUpload">
                 </div> <!--  row end -->
           </div>
           <h5 class="modal-title modal-title-text"el">Information Contact</h5>
@@ -256,7 +260,7 @@ if(isset($_SESSION['username'])) {
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Numero d’extention : </label>
-                <input type="phone" class="form-control" placeholder="..." name="numero_extenetsion">
+                <input type="phone" class="form-control" placeholder="..." name="numero_extenstion">
               </div>
             </div><!--  row end -->
             <div class="row">
@@ -275,11 +279,11 @@ if(isset($_SESSION['username'])) {
           <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Département : </label>
-                <select class="form-select" aria-label="Default select example" name="departement">
+                <select class="form-select"  name="departements">
                   <option selected disabled>Selectionner une Département</option>
-                  <option value="It">IT</option>
-                  <option value="Rh">RH</option>
-                  <option value="Finance">Finance</option>
+                  <option value="IT">IT</option>
+                  <option value="RH">RH</option>
+                  <option value="Finance">FINANCE</option>
                 </select>
               </div>
               <div class="col-md-6">
@@ -293,12 +297,14 @@ if(isset($_SESSION['username'])) {
                 <input type="text" class="form-control" placeholder="..."  name="post">
               </div>
           </div><!--  row end -->
-        </form>
+        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
+        <input type="submit" value="Ajouter" name="submit" class="btn btn-primary" onclick="create_recode()">
+        <input type="hidden"  name="add" value="add">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
       </div>
+      </form>
         </div>
       </div>
       </div>
@@ -306,36 +312,129 @@ if(isset($_SESSION['username'])) {
      <!-- Add employee Modal End!-->
       
      <!-- edit Modal -->
-     <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+     <div class="modal fade bd-example-modal-lg" id="exampleModal2"="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Modifer</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form action="add.php" method="POST" enctype="multipart/form-data">
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Matricule</label>
+                <input type="text" class="form-control" name="matricule" id="matricule">
+              </div>
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Photo</label>
+              <input type="file" class="form-control" placeholder="..." name="fileToUpload" id="fileToUpload">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Nom</label>
+                <input type="text" class="form-control" name="firstName" id="firstname">
+              </div>
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Prénom</label>
+                <input type="text" class="form-control" name="lastname" id="lastname">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Cin</label>
+                <input type="text" class="form-control" name="cin" id="cin">
+              </div>
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Email</label>
+                <input type="text" class="form-control" name="email" id="email">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Date d'embauche</label>
+                <input type="date" class="form-control" name="date_em" id="date_em">
+              </div>
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Address</label>
+                <input type="text" class="form-control" name="address" id="address">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Departement</label>
+                <select class="form-select"  id="departement" name="departements">
+                  <option selected disabled>Selectionner une Département</option>
+                  <option value="IT">IT</option>
+                  <option value="RH">RH</option>
+                  <option value="FINANCE">Finance</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Fonction</label>
+                <input type="text" class="form-control" name="fonction" id="fonction">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Post</label>
+                <input type="text" class="form-control" name="post" id="post">
+              </div>
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Burreaux</label>
+                <input type="text" class="form-control" name="bureaux" id="burreaux">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Telephone</label>
+                <input type="text" class="form-control" name="phone_portable" id="tele_portable">
+              </div>
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Extenstion</label>
+                <input type="text" class="form-control" name="numero_extenstion" id="extenstion">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Fix Direct</label>
+                <input type="text" class="form-control" name="numero_fix" id="fix_direct">
+                <input type="hidden" value="edit">
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
-          </div>
-        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
+        <input type="hidden"  name="edit" id="hidden" value="">
+        <input type="submit" class="btn btn-primary" value="sauvegarder">
+        </form>
       </div>
     </div>
   </div>
 </div>
      <!-- edit Modal end -->
+    <?php
+     if (isset($_GET['submit'])){
+        echo '<div class="alert alert-danger" role="alert">
+        '.$_GET['submit'].'
+      </div>';
+      }
+      if(isset($_GET['success'])){
+        echo '<div class="alert alert-success" role="alert">
+        '.$_GET['success'].'
+      </div>';
+      }
 
+    ?>
+     
 <!-- delete Modal -->
 
 <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -352,7 +451,7 @@ if(isset($_SESSION['username'])) {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" onclick="remove()" >Save changes</button>
       </div>
     </div>
   </div>
@@ -372,15 +471,18 @@ if(isset($_SESSION['username'])) {
                 <th>Prénom</th>
                 <th>CIN</th>
                 <th>Email</th>
+                <th>Date d'embauche</th>
 	            	<th>Address</th>
                 <th>Département</th>
                 <th>Résponsable</th>
                 <th>Fonction</th>
                 <th>Post</th>
                 <th>Bureaux</th>
-                <th>Numero</th>
-                <th></th>
-                <th></th>
+                <th>Telephone</th>
+                <th>extention</th>
+                <th>Fix :</th>
+                <th>edit</th>
+                <th>delete</th>
             </tr>
         </thead>
         <!-- <tbody id="ttab">
@@ -388,11 +490,6 @@ if(isset($_SESSION['username'])) {
     </table>
     </div>
   </div> <!-- Parent Box End -->
-
-
-
-
-
 
 <?php
     }else {
@@ -410,10 +507,84 @@ if(isset($_SESSION['username'])) {
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
-<script type="text/javascript" src="assets/js/main.js"></script>
+<script type="text/javascript">
+  // inputs :
+let matricule = document.getElementById('matricule');
+let photo = document.getElementById('photo');
+let firstname = document.getElementById('firstname');
+let secondname = document.getElementById("lastname");
+let cin = document.getElementById("cin");
+let email = document.getElementById('email');
+let date_em = document.getElementById("date_em");
+let address = document.getElementById("address");
+let departemenet = document.getElementById('departement');
+let fonction = document.getElementById("fonction");
+let post = document.getElementById("post");
+let burreaux = document.getElementById("burreaux");
+let telephone = document.getElementById("tele_portable");
+let extenstion = document.getElementById("extenstion");
+let fix = document.getElementById("fix_direct");
+let edit = (elem)=>{
+    let table_elements = elem.parentElement.parentElement.children ; 
+    matricule.value =  table_elements[0].innerHTML;
+    firstname.value  = table_elements[2].innerHTML;
+    secondname.value = table_elements[3].innerHTML;
+    cin.value  = table_elements[4].innerHTML;
+    email.value = table_elements[5].innerHTML;
+    date_em.value = table_elements[6].innerHTML;
+    address.value = table_elements[7].innerHTML;
+    
+    switch(table_elements[8].innerHTML){
+        case 'FINANCE': 
+            departemenet.innerHTML = `
+            <select class="form-select"  id="departement" name="departements">
+                  <option selected disabled>Selectionner une Département</option>
+                  <option value="IT">IT</option>
+                  <option value="RH">RH</option>
+                  <option value="FINANCE" selected>Finance</option>
+                </select>
+            `
+            break;
+        case 'rh': 
+            departemenet.innerHTML = `
+            <select class="form-select"  id="departement" name="departements">
+                  <option selected disabled>Selectionner une Département</option>
+                  <option value="IT">IT</option>
+                  <option value="RH" selected>RH</option>
+                  <option value="FINANCE">Finance</option>
+                </select>
+            `
+            break;
+        case 'IT': 
+            departemenet.innerHTML = `
+            <select class="form-select"  id="departement" name="departements">
+                  <option selected disabled>Selectionner une Département</option>
+                  <option value="IT" selected>IT</option>
+                  <option value="RH">RH</option>
+                  <option value="FINANCE">Finance</option>
+                </select>
+            `
+            break; 
+    }
+
+    fonction.value = table_elements[10].innerHTML;
+    post.value = table_elements[11].innerHTML;
+    burreaux.value = table_elements[12].innerHTML;
+    telephone.value = table_elements[13].innerHTML;
+    extenstion.value = table_elements[14].innerHTML;
+    fix.value = table_elements[15].innerHTML;
+    document.getElementById("hidden").value=table_elements[0].innerHTML;
+    
+    
+}
+</script>
 <script type="text/javascript">
    $(document).ready(()=>{
+        
         $("#tab").DataTable({
+          scrollY:"200px",
+          
+          "responsive":true,
           "ajax":{
             'url':"inc/src.php",
             'method':"post",
@@ -421,11 +592,16 @@ if(isset($_SESSION['username'])) {
           },
           "columns":[
             {data:"matricule"},
-            {data:"photo"},
+            {data:"photo",
+            "render":function(data){
+              return '<img src="'+data+'">'
+            }
+            },
             {data:"firstName"},
             {data:"lastname"},
             {data:"cin"},
             {data:"email"},
+            {data:"date_em"},
             {data:"address"},
             {data:"departement"},
             {data:"responsable_name"},
@@ -433,15 +609,18 @@ if(isset($_SESSION['username'])) {
             {data:"post"},
             {data:"burreaux"},
             {data:"phone_portable"},
+            {data:"phone_fix"},
+            {data:"phone_extenstion"},
+            
             {
                 data: null,
                 className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-pencil" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>',
+                defaultContent: '<i class="fa fa-pencil" onclick="edit(this)" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>',
                 orderable: false
             },{
                 data: null,
                 className: "dt-center editor-edit",
-                defaultContent: '<i class="fa fa-trash"  data-toggle="modal" data-target="#exampleModal3"/>',
+                defaultContent: '<i class="fa fa-trash" data-toggle="modal" data-target="#exampleModal3"/>',
                 orderable: false
             }            
           ],  

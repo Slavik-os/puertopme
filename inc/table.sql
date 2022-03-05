@@ -28,7 +28,6 @@ CREATE TABLE departments(
         FOREIGN KEY (responsable_id) references employes_tbl(id)
 );
 SELECT departments.firstName   FROM departments INNER JOIN employes_tbl  ON departments.departement = employes_tbl.departement ;
-*/
 
 -- ALTER TABLE employes_tbl ADD responsable_name VARCHAR(255) NOT NULL ;
 -- UPDATE employes_tbl
@@ -39,3 +38,11 @@ CREATE TABLE departments(
 		CREATE TABLE departments AS SELECT id,firstName,lastName,departement FROM employes_tbl WHERE role='responsable' ;
 
 );
+
+*/
+INSERT INTO employes_tbl(
+                        matricule,firstName,lastname,photo,email,username,password,
+                        cin,date_em,departement,burreaux,post,fonction,address,phone_portable,phone_extenstion,phone_fix,role)
+                        VALUES('1234','akram','elkalkha','photo','wqe@gmail.com','kb','768a0f027c2142bf3f626e9422a6ffe9','456',DATE_FORMAT('2022-03-09','%Y-%d-%m'),'bbb','ppp','IT','DEV','1233333','11111111','eeeeee','2222','');
+
+

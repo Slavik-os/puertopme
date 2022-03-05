@@ -1,14 +1,14 @@
 <?php
 require 'config.php';
-if(isset($_POST['password']) && isset($_POST['username'])){
+if(isset( $_POST['password']) && isset($_POST['username'])){
     function test_input($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
       }
-      $username = test_input($_POST['username']);
-      $password = test_input($_POST['password']);
+      $username = mysqli_real_escape_string($con,test_input($_POST['username']));
+      $password = mysqli_real_escape_string($con,test_input($_POST['password']));
       
       if (empty($username) ){
           header("Location:../login.php?error=Nom d'utilisateur requis !");
@@ -27,6 +27,7 @@ if(isset($_POST['password']) && isset($_POST['username'])){
                 $_SESSION['username'] = $row['username'];
                 $_SESSION['firstName'] = $row['firstName'];
                 $_SESSION['role'] = $row['role'];
+                $_SESSION['departement'] = $row['departement'];
                 header("Location:../redirect.php");
               }
          } else {
