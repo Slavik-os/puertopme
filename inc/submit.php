@@ -17,7 +17,8 @@ if(isset( $_POST['password']) && isset($_POST['username'])){
       }
       else {
          $password = md5($password);
-         $sql = "SELECT * FROM employes_tbl WHERE username = '$username'  AND 
+         $sql = "SELECT username,password,lastname,firstName,matricule,
+         id,role,departement,fonction,firstName FROM employes_tbl WHERE username = '$username'  AND 
                  password = '$password'";
          $result = mysqli_query($con,$sql);
          if(mysqli_num_rows($result) === 1){
@@ -28,6 +29,9 @@ if(isset( $_POST['password']) && isset($_POST['username'])){
                 $_SESSION['firstName'] = $row['firstName'];
                 $_SESSION['role'] = $row['role'];
                 $_SESSION['departement'] = $row['departement'];
+                $_SESSION['fonction'] = $row['fonction'];
+                $_SESSION['lastname'] = $row['lastname'];
+                $_SESSION['matricule'] = $row['matricule'];
                 header("Location:../redirect.php");
               }
          } else {

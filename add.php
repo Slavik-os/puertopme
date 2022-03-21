@@ -1,20 +1,18 @@
+
 <?php
      ob_start();
-     include('index.php');
-     ob_end_clean();
-     require ('inc/config.php');
-     
-     if(isset($_SESSION['username'])){
-        if ($_SESSION['role'] != "responsable"){
-            header("Location:404");
+     if(isset($_POST['submit_demand'])) {
+        include('home.php');
+        } else {
+            include('index.php');
         }
-     }else {
-        header("Location:logout.php");
-     }
+    // error_reporting(0);
+     require ('inc/config.php');
+
+     
    // Upload image :
    $target_dir = "uploads/";
-   $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-   echo $target_file;
+   $target_file = "uploads/" . basename($_FILES["fileToUpload"]["name"]);
    $uploadOk = 1;
    $allowed = ['jpeg','jpg','gif','png'];
    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -23,14 +21,22 @@
        if($check) {
            $uploadOK =1;
        }else {
-           header("Location:index.php?submit=Seules les images sont autorisées à être téléchargées");
-           $uploadOK =0;
-           die();
+           if ($target_file == $target_dir){
+               $target_file = 'uploads/30728892_2124503501119323_4434534100824489984_n.png';
+               header("Location:index.php?success=Modifier Success !");
+           }
        }
        if(!in_array($imageFileType,$allowed)){
+           if ($target_file == $target_dir) {
+            $target_file = 'uploads/30728892_2124503501119323_4434534100824489984_n.png';
+            header("Location:index.php?success=Modifier Success !");
+                die();
+           } else{
+        
            header("Location:index.php?submit=seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.");
            $uploadOK =0;
            die();
+                }  
        }
        if ($uploadOk==0){
            header("Location:index.php?submit= Quelque chose s\'est mal passé");
@@ -62,9 +68,8 @@
     $bureaux = mysqli_real_escape_string($con,$_POST['bureaux']);
     $post = mysqli_real_escape_string($con,$_POST['post']);
     $old_mat = mysqli_real_escape_string($con,$_POST['edit']);
+    $mat_delete = mysqli_real_escape_string($con,$_POST['delete']);
     
-   
-
     // record user data end
      
      class Employee {
@@ -86,12 +91,13 @@
          public $listOfErrors = [];
          public $old_mat;
          public $post;
+         public $mat_delete ;
          private $con;
         function __construct(
                             $matricule,$firstname,$lastname,$photo,$email,
                             $username,$password,$cin,$date_em,$departements,$bureaux,$post,
                             $fonction,$address,$phone_portable,$phone_extenstion,
-                            $phone_fix,$old_mat)
+                            $phone_fix,$old_mat,$mat_delete)
                             {
                                 $this->matricule = $matricule;
                                 $this->firstname = $firstname;
@@ -111,6 +117,7 @@
                                 $this->bureaux = $bureaux;
                                 $this->post = $post;
                                 $this->old_mat = $old_mat;
+                                $this-> mat_delete = $mat_delete;
                                 $this->con=mysqli_connect("localhost","root","nomads","puerto_dbs"); // reconnect via oop
                             }
         public function check_for_dup($check,$string,$message){
@@ -188,18 +195,37 @@
                 ";
                 $this->query;
                 $this->con->query($this->query);
+
                 header("Location:index.php?success=Modifier Success !");
                 
         }
-                        
-
+        
+        function delete_recorde($mat_delete){
+               $this->mat_delete = $mat_delete;
+               $this->query = "SELECT role FROM employes_tbl WHERE matricule='$this->mat_delete'
+               and role='responsable'";
+               $this->result =  mysqli_query($this->con,$this->query);
+               $this->row = mysqli_fetch_array($this->result);
+               if ($this->row ==Null){
+                $this->query = "DELETE FROM employes_tbl WHERE matricule = '$this->mat_delete'";
+                $this->con->query($this->query);
+                header("Location:index.php?success=Modifier Success !");
+                
+               }else{
+                 header("Location:index.php?submit=Vous peuvez pas supprimer un responsable!");
+                die();
+            }
+        }             
     }
+
+
+
   
 $employee = new Employee(
                         $matricule,$firstname,$lastname,$photo,
                         $email,$username,$password,$cin,
                         $date_em,$departements,$bureaux,$post,$fonction,$address,$phone_portable,
-                        $numero_extenstion,$numero_fix,$old_mat
+                        $numero_extenstion,$numero_fix,$old_mat,$mat_delete
                     );
                     
 
@@ -210,6 +236,221 @@ if(isset($_POST['add'])){
 if(isset($_POST['edit'])){
     $employee->edit_recorde();
 }
+if(isset($_POST['delete'])){
+    $employee->delete_recorde($_POST['delete']);
+    // echo $_POST['delete'];
+}
 
 
+
+class Congee {
+    public $type_demand;
+    public $type ;
+    public $employee_id;
+    public $matricule;
+    public $firstName;
+    public $lastname;
+    public $responsable_id;
+    public $departement ;
+    public $date_start;
+    public $date_end;
+    public $replacement;
+    public $justification;
+    public $created_date;
+    function __construct(
+                        $type_demand,$type,$matricule,$firstName,$lastname,$employee_id,$responsable_id,
+                        $departement,$date_start,$date_end,$replacement,
+                        $justification,$taken_dayes,$fonction,$created_date,
+                        $heur_start,$heur_end,$person_replace
+                        ) {
+                        $this->fonction = $fonction;
+                        $this->type_demand = $type_demand;
+                        $this->type = $type;
+                        $this->employee_id = $employee_id;
+                        $this->matricule = $matricule;
+                        $this->firstName = $firstName;
+                        $this->lastname = $lastname;
+                        $this->responsable_id = $responsable_id;
+                        $this->departement = $departement;
+                        $this->date_start = $date_start;
+                        $this->date_end = $date_end ;
+                        $this->replacement = $replacement;
+                        $this->justification = $justification;
+                        $this->taken_dayes = $taken_dayes;
+                        $this->created_date = $created_date;
+                        $this->heur_start = $heur_start;
+                        $this->heur_end = $heur_end;
+                        $this->con=mysqli_connect("localhost","root","nomads","puerto_dbs"); // reconnect via oop
+                       
+
+                        }
+    function create_demand($type){
+        $this->type = $type;
+        switch($this->type) {
+            case "DEMAND DABSENCE.":    
+            $this->query =("
+            INSERT INTO demands (employee_id,responsable_id,matricule_employee,firstName,lastname,type_demand,departement,date_start,date_end,heur_start,heur_end,
+            replacement,status,fonction,justification,created_date)VALUES(
+            $this->employee_id,$this->responsable_id,'$this->matricule','$this->firstName','$this->lastname','$this->type_demand','$this->department',
+            DATE_FORMAT('$this->date_start','%Y-%m-%d'),DATE_FORMAT('$this->date_end','%Y-%m-%d'),
+            '$this->heur_start','$this->heur_end','$this->replacement',NUll,'$this->fonction','$this->justification',DATE_FORMAT('$this->created_date','%Y-%m-%d'));
+                        
+            ");
+            $this->result =  mysqli_query($this->con,$this->query);
+            header("Location:absence.php?submit=Envoye!");
+            break;
+
+            case "DEMANDE DE CONGE" :
+                $this->query = ("
+                INSERT INTO demands(employee_id,responsable_id,matricule_employee,firstName,lastName,type_demand,departement,date_start,date_end,
+                replacement,status,justification,fonction,created_date)
+                VALUES(
+                        $this->employee_id,$this->responsable_id,'$this->matricule','$this->firstName','$this->lastname','$this->type_demand','$this->departement',
+                        DATE_FORMAT('$this->date_start','%Y-%m-%d'),
+                        DATE_FORMAT('$this->date_end','%Y-%m-%d'),
+                        '$this->replacement',null,'$this->justification',
+                        '$this->fonction',DATE_FORMAT('$this->created_date','%Y-%m-%d')
+                );
+            
+            ");
+            
+            $this->result =  mysqli_query($this->con,$this->query);
+           
+            
+            header("Location:conge.php?submit=Envoye!");
+        
+    }
+        
+    }
+
+    function change_status($demand_id,$status,$comment,$depar){
+       $this->demand_id=$demand_id;
+       $this->status = $status;
+       $this->comment = $comment;
+       $this->depar = $depar;
+       if ($depar=='RH'){
+        $this->sql = "UPDATE demands SET status_rh = '$this->status' ,comment ='$this->comment'
+        WHERE demands_id = $this->demand_id
+       ";
+    //    echo $this->sql;
+       }else{
+       $this->sql = "UPDATE demands SET status = '$this->status' ,comment ='$this->comment'
+        WHERE demands_id = $this->demand_id
+       ";
+        }
+       $this->result = mysqli_query($this->con,$this->sql);
+       header_remove();
+       header("Location:my_demands.php?changer=Changer");
+   
+}
+
+function delete_demand($demand_id){
+    $this->demand_id = $demand_id;
+    $this->sql ="DELETE FROM demands where demands_id =$this->demand_id";
+    $this->result = mysqli_query($this->con,$this->sql);
+    header_remove();
+    if ($_SESSION['role'] == ""){
+        header("Location:home.php?submit=Suprimmer");
+    }else{
+    header("Location:my_demands.php?submit=Suprimmer");
+}
+
+}
+
+}
+
+
+
+if(isset($_POST['submit_demand'])) {
+    $type_demand = $_SESSION['demand'];
+    $type = $_POST['flexRadioDefault'];
+    $employee_id = $_SESSION['id'];
+    $departement = $_SESSION['departement'];
+    $date_start = $_POST['date_start'];
+    $date_end = $_POST['date_end'];
+    $replacement = $_POST['person_replace'];
+    $justification = $_POST['justification'];
+    $date1 = strtotime($date_start);
+    $date2 = strtotime($date_end);
+    $takenDays = date('d', $date2 - $date1);
+    $fonction = $_SESSION['fonction'];
+    $date_dabsence_s = $_POST['date_dabsence_s'];
+    $date_dabsence_r = $_POST['date_dabsence_r'];
+    $heur_start = $_POST['heur_start'];
+    $heur_end  = $_POST['heur_end'];
+    $person_replace = $_POST['person_replace'];
+
+    // responsable id 
+    $responsable_id= [];
+    $sql = "SELECT id FROM departments WHERE departement ='$departement'";
+    $result = mysqli_query($con,$sql);
+    while($row = mysqli_fetch_assoc($result)){
+       $responsable_id[] = $row;
+    }
+    $responsable_id = current($responsable_id)['id'];
+    // end
+    switch($type_demand){
+        case "DEMANDE DE CONGE" :
+        
+            $conge = new Congee(
+                $type_demand,$type,$_SESSION['matricule'],$_SESSION['firstName'],
+                $_SESSION['lastname'],$_SESSION['id'],$responsable_id,
+                $departement,$date_start,$date_end,$replacement,
+                $justification,$takenDays,$fonction,date("Y-m-d"),
+                Null,Null,Null,Null,Null
+              );
+              break;
+              case "DEMAND D'ABSENCE.":
+               $motif = $_POST['motif_dabsence'];
+               $date_s = $_POST['date_dabsence_s'];
+               $date_r = $_POST['date_dabsence_r'];
+               $heur_s = $_POST['heur_start'];
+               $heur_r = $_POST['heur_end'];
+               $replacement = $_POST['person_replace'];
+               $type_demand = 'DEMAND DABSENCE.';
+               $conge = new Congee(
+                $type_demand,$type,$_SESSION['matricule'],$_SESSION['firstName'],
+                $_SESSION['lastname'],$_SESSION['id'],$responsable_id,
+                $departement,$date_s,$date_r,$replacement,
+                $motif,$takenDays,$fonction,date("Y-m-d"),
+                $heur_s,$heur_r,$replacement
+
+               );
+            break;
+            case "ORDRE DE MISSION":
+                $conge = new Congee(
+                    $type_demand,$type,$_SESSION['matricule'],$_SESSION['firstName'],
+                    $_SESSION['lastname'],$_SESSION['id'],$responsable_id,
+                    $departement,$date_start,$date_end,$replacement,
+                    $justification,$takenDays,$fonction,date("Y-m-d"),
+                    Null,Null,Null,Null,Null
+                  );
+            break;
+    }
+   
+    $conge->create_demand($type_demand);
+
+}
+if(isset($_POST['change_status'])){
+    $conge = new Congee(
+        $type_demand,$type,$_SESSION['matricule'],$_SESSION['firstName'],
+        $_SESSION['lastname'],$_SESSION['id'],$responsable_id,
+        $departement,$date_start,$date_end,$replacement,
+        $justification,$takenDays,$fonction,date("Y-m-d"),
+        Null,Null,Null,Null,Null
+      );
+      $demand_id = $_POST['demands_id'];
+      $conge->change_status($demand_id,$_POST['status'],$_POST['comment'],$_SESSION['departement']);
+}
+
+if(isset($_POST['deleted_demand'])){
+    $conge = new Congee(
+        $type_demand,$type,$_SESSION['matricule'],$_SESSION['firstName'],
+        $_SESSION['lastname'],$_SESSION['id'],$responsable_id,
+        $departement,$date_start,$date_end,$replacement,
+        $justification,$takenDays,$fonction,date("Y-m-d"),
+        Null,Null,Null,Null,Null
+      );
+      $conge->delete_demand($_POST['deleted_demand']);
+}
 ?>

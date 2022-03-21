@@ -1,7 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -26,6 +28,9 @@
 <body>
 
 <style>
+    label {
+        padding-bottom : 20px;
+    }
   td img {
     width : 50px;
     height : 50px;
@@ -38,6 +43,9 @@
 
   .fa {
     font-size :14px;
+  }
+  .main-menu {
+      height : 130%;
   }
   #tab_filter input[type=search]{
     margin-right :50px;
@@ -58,7 +66,7 @@
     
     }
     .main-menu {
-      height :150% !important;
+      height :240% !important;
     }
     #tab_length label ,#tab_info,#tab_paginate{
     font-size : 12px;
@@ -77,8 +85,6 @@
 session_start();
 if(isset($_SESSION['username'])) {
     if ($_SESSION['role']==''){ ?>
-
-
 <div class="row">
 <nav class="navbar navbar_v justify-content-between flex-nowrap" style="background:#212121;border:none;position:; ;width:100% !important; z-index:5;">
 <a class="navbar-brand" href="#">
@@ -88,7 +94,7 @@ if(isset($_SESSION['username'])) {
   <div class="dropdown mr-5" style="padding-left: 0 100px">
   <button class="btn btn-secondary dropdown-toggle" style='background:none;border : none;'type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <img src="assets/imgs/default_login.png" alt=""> 
-    <span class="user_id" style="color : #8391A3;"><?php echo $_SESSION['username'];?> | <?php echo $_SESSION['departement'];?></span>
+    <span class="user_id" style="color : #8391A3;"><?php echo $_SESSION['username'];?></span>
   </button>
   <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
     <a class="dropdown-item hover-drop" href="logout.php" ">LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
@@ -188,10 +194,9 @@ if(isset($_SESSION['username'])) {
                 </li>  
             </ul>
         </nav>
-        <div class="boxParent" style="margin: 10px 90px;">
+<div class="boxParent" style="margin: 10px 90px;">
     <h1 class="txt-header" style="font-family:'Open Sans'">Ajouter une Demande</h1>
-    <button type="button" class="btn btn-primary my-3 px-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Ajouter </button>
-      
+    <button type="button" class="btn btn-primary my-3 px-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">choisir une demande </button>   
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -200,6 +205,7 @@ if(isset($_SESSION['username'])) {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+    
       </div>
       <div class="modal-body">
       <form action="direct.php" method="POST"">
@@ -220,155 +226,122 @@ if(isset($_SESSION['username'])) {
         <input type="hidden" id="type_demand_page"  name="type_demand" value="" >
         </form>
       </div>
+            </div>
+        </div>
+        </div>
+    </div> <!-- Modal end -->
+    <!-- conge info -->
+    <?php
+        if(isset($_GET['submit'])){
+          echo '
+                <div class="alert alert-success" role="alert">
+                  '.$_GET["submit"].' 
+                </div>
+                ';
+        }
+      ?> 
+    <div class="row m-4">
+    <div class="form-group">
+        <form method="POST" action="add.php">
+        <div class="row">
+            <label name="flexRadioDefault" class="py-3">TYPE DE CONGE SOLLICITE</label>
+            <div class="col-md-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="radio" value="Congé annuel" name="flexRadioDefault" id="flexRadioDefault1" >
+                    <label class="form-check-label" >Congé annuel</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="radio" value="Maternité" name="flexRadioDefault" id="flexRadioDefault1">
+                    <label class="form-check-label">Maternité</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="radio" value="Mariage" name="flexRadioDefault" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Mariage</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="radio" value="Naissance" name="flexRadioDefault" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Naissance</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="Décès" id="flexRadioDefault1"">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Décès </label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="radio" value="Circoncision" name="flexRadioDefault" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Circoncision </label>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-2">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="Autres" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Autres :  </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+        <div class="row mt-5">
+                <div class="col-md-3">
+                    <label class="form-check-label" for="flexRadioDefault">Date de congé (Debut)</label>
+                    <input type="date" class="form-control" name="date_start" id="Date_start">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-check-label" for="flexRadioDefault">Date de congé (Fin)</label>
+                    <input type="date" class="form-control" name="date_end" id="Date_end">
+                </div>
+              
+       
+        </div>
+        <div class="row mt-5">
+                <div class="col-md-3">
+                    <label class="form-check-label" for="flexRadioDefault">Personne de remplacement  </label>
+                    <input type="text" class="form-control" name="person_replace">
+                </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-5">
+                <label class="form-check-label" for="flexRadioDefault"> Un justificatif pour les congés 
+                    (sauf congé annuel) peut être demandé. </label>
+                <textarea id="form18" placeholder="..." class="md-textarea form-control" name="justification" rows="3"></textarea>
+            </div>
+        </div>
+            <div class="col-md-6 mt-5">
+            <input type="submit" name="submit_demand" onclick="set_type()" class="form-control btn btn-primary">
+            <input type="hidden" value="" id="demand_type" name="demand_type">
+            </div>
+        </form>
     </div>
-  </div>
-</div>
-</div>
-
-<div class="row mt-5">
-<h1 class="txt-header" style="font-family:'Open Sans'">Mes demands </h1>
-<div class="table-responsive mt-4">
-     <table id="tab" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Type de Demand</th>
-                <th>Departement</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Status RH</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <!-- <tbody id="ttab">
-        </tbody> -->
-    </table>
     </div>
-  </div> <!-- Parent Box End -->
-
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form action="add.php" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Supprimer cette demande?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      êtes-vous sûr de vouloir supprimer cette demand ?
-
-      </div>
-      <div class="modal-footer">
-      <input type="submit" class="btn btn-danger" value="Confrimer" name="delete_record" >
-        <input type="hidden" id="delete_demand" name="deleted_demand" value="">
-      </div>
-    </div>
-  </div>
-</div>
-</form>
-<div>
-
-
-
-
-
-
-
-        
+            
 <script>
     let redirect = (elem)=>{
         let e = $('#demands').val();
         let select_hero = document.getElementById("type_demand_page");
         select_hero.value = e;
-      
+    }
+    let set_type = ()=>{
+        document.getElementById("demand_type").value="";
     }
 
       
 </script>
-
-
-<script>
-
-$(document).ready(()=>{
-      
-  $("#tab").DataTable({
-          scrollY:"200px",
-          "responsive":true,
-          "ajax":{
-            'url':"inc/user_demands_ajax.php",
-            'method':"post",
-            "dataSrc" :"",
-          },
-          "columns":[
-            {data:'demands_id'},
-            {data:'type_demand'},
-            {data:'departement'},
-            {data:'created_date'},
-            {data:'status',className:'data',"targets":[1],
-                "render":function(data){
-                      if(data=='True'){
-                        return innerHTML = '<b><span style="color : green">valider</span><b>';
-                      }
-                      else if(data=='False'){
-                        return innerHTML = '<b><span style="color :red">Decline</span><b>';
-                      }
-                     else {
-                      return innerHTML = '<b><span style="color : #d1b500">En attendant ...</span><b>';
-                     }
-                }
-            },
-            {data:'status_rh',className:'data',"targets":[1],
-                "render":function(data){
-                      if(data=='True'){
-                        return innerHTML = '<b><span style="color : green">valider</span><b>';
-                      }
-                      else if(data=='False'){
-                        return innerHTML = '<b><span style="color :red">Decline</span><b>';
-                      }
-                     else {
-                      return innerHTML = '<b><span style="color : #d1b500">En attendant ...</span><b>';
-                     }
-                }
-            },
-            {
-                data: null,
-                className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-trash" onclick="set_demand(this)" data-toggle="modal" data-target="#delete_modal" data-whatever="@fat"/>',
-                orderable: false
-            },{
-            data: null,
-                className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-info"  data-toggle="modal"  data-whatever="@fat"/>',
-                orderable: false}
-          ],  
-        }
-        )});
-
-        function set_demand(elem){
-    id = elem.parentElement.parentElement.children[0].innerText ;
-    document.getElementById("delete_demand").value=id;    
-  }
-
-
-
-        
-$(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#tab tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-    });
-  });
-});
-
-</script>
-
 <?php
 
     }else {

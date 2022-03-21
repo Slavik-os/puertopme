@@ -1,0 +1,21 @@
+CREATE TABLE demands(
+	demands_id  INT NOT NULL AUTO_INCREMENT,
+	employee_id INT NOT NULL ,
+	FOREIGN KEY (employee_id) REFERENCES Employes_tbl(id),
+	matricule_employee VARCHAR(255) NOT NULL,
+	FOREIGN KEY (matricule_employee) REFERENCES Employes_tbl(matricule),
+	firstName VARCHAR(255) NOT NULL,
+	lastname VARCHAR(255) NOT NULL,
+	responsable_id INT NOT NULL ,
+	type_demand VARCHAR(255) NOT NULL ,
+	departement VARCHAR(255) NOT NULL ,
+	date_start date NOT NULL, 
+	date_end date NOT NULL,		
+	replacement VARCHAR(255) NOT NULL,
+	status VARCHAR(255) ,
+	justification VARCHAR(255) NOT NULL,
+	fonction VARCHAR(255) NOT NULL,
+	comment VARCHAR(255) DEFAULT '...',
+	created_date date ,
+	PRIMARY KEY(demands_id)
+);

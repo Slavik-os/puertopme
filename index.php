@@ -87,7 +87,7 @@ if(isset($_SESSION['username'])) {
   <div class="dropdown mr-5" style="padding-left: 0 100px">
   <button class="btn btn-secondary dropdown-toggle" style='background:none;border : none;'type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <img src="assets/imgs/default_login.png" alt=""> 
-    <span class="user_id" style="color : #8391A3;"><?php echo $_SESSION['username'];?></span>
+    <span class="user_id" style="color : #8391A3"> <?php echo $_SESSION['username'].' / '.$_SESSION['departement'];?></span>
   </button>
   <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
     <a class="dropdown-item hover-drop" href="logout.php" ">LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
@@ -99,83 +99,21 @@ if(isset($_SESSION['username'])) {
 <nav class="main-menu" style="z-index:1;flex-nowrap">
             <ul>
                 <li>
-                    <a href="http://justinfarrow.com">
+                    <a href="index.php">
                         <i class="fa fa-home fa-2x"></i>
                         <span class="nav-text">
                             Dashboard
                         </span>
                     </a>
-                  
                 </li>
                 <li class="has-subnav">
-                    <a href="#">
-                        <i class="fa fa-laptop fa-2x"></i>
-                        <span class="nav-text">
-                            Stars Components
-                        </span>
-                    </a>
-                    
-                </li>
-                <li class="has-subnav">
-                    <a href="#">
+                    <a href="my_demands.php">
                        <i class="fa fa-list fa-2x"></i>
                         <span class="nav-text">
-                            Forms
-                        </span>
-                    </a>
-                    
-                </li>
-                <li class="has-subnav">
-                    <a href="#">
-                       <i class="fa fa-folder-open fa-2x"></i>
-                        <span class="nav-text">
-                            Pages
-                        </span>
-                    </a>
-                   
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-bar-chart-o fa-2x"></i>
-                        <span class="nav-text">
-                            Graphs and Statistics
+                            Mes Demands
                         </span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-font fa-2x"></i>
-                        <span class="nav-text">
-                           Quotes
-                        </span>
-                    </a>
-                </li>
-                <li>
-                   <a href="#">
-                       <i class="fa fa-table fa-2x"></i>
-                        <span class="nav-text">
-                            Tables
-                        </span>
-                    </a>
-                </li>
-                <li>
-                   <a href="#">
-                        <i class="fa fa-map-marker fa-2x"></i>
-                        <span class="nav-text">
-                            Maps
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                       <i class="fa fa-info fa-2x"></i>
-                        <span class="nav-text">
-                            Documentation
-                        </span>
-                    </a>
-                </li>
-            </ul>
-
             <ul class="logout">
                 <li>
                    <a href="logout.php">
@@ -249,7 +187,7 @@ if(isset($_SESSION['username'])) {
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Photo:</label>
-                <input type="file" class="form-control" placeholder="..." name="fileToUpload" id="fileToUpload">
+                <input type="file" class="form-control" placeholder="..." name="fileToUpload" id="">
                 </div> <!--  row end -->
           </div>
           <h5 class="modal-title modal-title-text"el">Information Contact</h5>
@@ -414,7 +352,7 @@ if(isset($_SESSION['username'])) {
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <input type="hidden"  name="edit" id="hidden" value="">
-        <input type="submit" class="btn btn-primary" value="sauvegarder">
+        <input type="submit" class="btn btn-primary"  value="sauvegarder">
         </form>
       </div>
     </div>
@@ -441,17 +379,20 @@ if(isset($_SESSION['username'])) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer un Employee</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <form action="add.php" method="POST">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        êtes-vous sûr de vouloir supprimer cet employe ? 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="remove()" >Save changes</button>
+        <input type="submit" class="btn btn-danger" value="Confirmer">
+        <input type="hidden" id="delete_em" name="delete" value="">
+        </form>
       </div>
     </div>
   </div>
@@ -461,7 +402,7 @@ if(isset($_SESSION['username'])) {
 <!-- delete Modal end -->
 
 
-      <div class="table-responsive mt-4">
+  <div class="table-responsive mt-4">
      <table id="tab" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -481,8 +422,8 @@ if(isset($_SESSION['username'])) {
                 <th>Telephone</th>
                 <th>extention</th>
                 <th>Fix :</th>
-                <th>edit</th>
-                <th>delete</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <!-- <tbody id="ttab">
@@ -545,7 +486,7 @@ let edit = (elem)=>{
                 </select>
             `
             break;
-        case 'rh': 
+        case 'RH': 
             departemenet.innerHTML = `
             <select class="form-select"  id="departement" name="departements">
                   <option selected disabled>Selectionner une Département</option>
@@ -553,7 +494,7 @@ let edit = (elem)=>{
                   <option value="RH" selected>RH</option>
                   <option value="FINANCE">Finance</option>
                 </select>
-            `
+            `;
             break;
         case 'IT': 
             departemenet.innerHTML = `
@@ -575,7 +516,10 @@ let edit = (elem)=>{
     fix.value = table_elements[15].innerHTML;
     document.getElementById("hidden").value=table_elements[0].innerHTML;
     
-    
+}
+let remove = (elem)=>{
+    document.getElementById("delete_em").value = elem.parentElement.parentElement.children[0].innerHTML;
+  
 }
 </script>
 <script type="text/javascript">
@@ -620,7 +564,7 @@ let edit = (elem)=>{
             },{
                 data: null,
                 className: "dt-center editor-edit",
-                defaultContent: '<i class="fa fa-trash" data-toggle="modal" data-target="#exampleModal3"/>',
+                defaultContent: '<i class="fa fa-trash" data-toggle="modal" onclick="remove(this)" data-target="#exampleModal3"/>',
                 orderable: false
             }            
           ],  
