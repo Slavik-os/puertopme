@@ -284,9 +284,9 @@ class Congee {
                        
 
                         }
-    function create_demand($type){
-        $this->type = $type;
-        switch($this->type) {
+    function create_demand($type_d){
+        $this->type_d = $type_d ;
+        switch($this->type_d) {
             case "DEMAND DABSENCE.":    
             $this->query =("
             INSERT INTO demands (employee_id,responsable_id,matricule_employee,firstName,lastname,type_demand,departement,date_start,date_end,heur_start,heur_end,
@@ -302,10 +302,10 @@ class Congee {
 
             case "DEMANDE DE CONGE" :
                 $this->query = ("
-                INSERT INTO demands(employee_id,responsable_id,matricule_employee,firstName,lastName,type_demand,departement,date_start,date_end,
+                INSERT INTO demands(employee_id,responsable_id,matricule_employee,firstName,lastName,conge_type,type_demand,departement,date_start,date_end,
                 replacement,status,justification,fonction,created_date)
                 VALUES(
-                        $this->employee_id,$this->responsable_id,'$this->matricule','$this->firstName','$this->lastname','$this->type_demand','$this->departement',
+                        $this->employee_id,$this->responsable_id,'$this->matricule','$this->firstName','$this->lastname','$this->type','$this->type_demand','$this->departement',
                         DATE_FORMAT('$this->date_start','%Y-%m-%d'),
                         DATE_FORMAT('$this->date_end','%Y-%m-%d'),
                         '$this->replacement',null,'$this->justification',
@@ -353,8 +353,7 @@ function delete_demand($demand_id){
         header("Location:home.php?submit=Suprimmer");
     }else{
     header("Location:my_demands.php?submit=Suprimmer");
-}
-
+    }
 }
 
 }

@@ -344,9 +344,9 @@ $(document).ready(()=>{
             },{
             data: null,
                 className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-info"  data-toggle="modal"  data-whatever="@fat"/>',
+                defaultContent: '<i class="fa fa-info"  data-toggle="modal" onclick="getType(this)" data-whatever="@fat"/>',
                 orderable: false}
-          ],  
+          ],
         }
         )});
 
@@ -354,10 +354,6 @@ $(document).ready(()=>{
     id = elem.parentElement.parentElement.children[0].innerText ;
     document.getElementById("delete_demand").value=id;    
   }
-
-
-
-        
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
@@ -366,6 +362,11 @@ $(document).ready(function(){
     });
   });
 });
+
+
+
+
+
 
 </script>
 
@@ -379,7 +380,43 @@ $(document).ready(function(){
 }
     
     ?>
+<script src="js_templetes/demands.js">
+</script>
+<script>
+  
+  function get_obj(nameKey,myArray){
+    for (let i=0; i < myArray.length; i++) {
+        if (myArray[i].demands_id === nameKey) {
+            return myArray[i];  
+        }
+    }
+  }
 
+
+  let getType = (elem)=>{
+  let type = elem.parentElement.parentElement.children[1].innerText;
+  let demand_id = elem.parentElement.parentElement.children[0].innerText;
+  var g_data = [];
+  fetch('inc/user_demands_ajax.php').then(response => response.json())
+  .then((data)=>{
+    let result = get_obj(demand_id,data);
+    let w = window.open("");
+
+    switch(type){
+      case 'DEMAND DABSENCE.':
+        console.log(result);
+        w.document.writeln(conge(result));        
+      break;
+      case 'DEMANDE DE CONGE' :
+        w.document.writeln(absence(result));
+       break;
+    }
+  });
+  
+ 
+    
+}
+</script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
