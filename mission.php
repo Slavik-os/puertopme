@@ -79,6 +79,13 @@
     color : #495057 ;
   }
   }
+
+  .image-login {
+    width:50px;
+    height : 50px;
+    border-radius :50%;
+    object-fit : cover ;
+  }
 </style>
 <?php
 session_start();
@@ -92,7 +99,7 @@ if(isset($_SESSION['username'])) {
   </a>
   <div class="dropdown mr-5" style="padding-left: 0 100px">
   <button class="btn btn-secondary dropdown-toggle" style='background:none;border : none;'type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <img src="assets/imgs/default_login.png" alt=""> 
+  <img id="login_photo" class="image-login" src="assets/imgs/default_login.png" alt="">
     <span class="user_id" style="color : #8391A3;"><?php echo $_SESSION['username'];?></span>
   </button>
   <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
@@ -336,6 +343,10 @@ if(isset($_SESSION['username'])) {
 
             
 <script>
+       fetch('http://localhost/puertopme/inc/user_info.php')
+        .then(response => response.json())
+        .then(data => document.getElementById("login_photo").src=data[0].photo);
+
     let redirect = (elem)=>{
         let e = $('#demands').val();
         let select_hero = document.getElementById("type_demand_page");
@@ -346,7 +357,9 @@ if(isset($_SESSION['username'])) {
         document.getElementById("demand_type").value="";
     }
 
-      
+    fetch('http://localhost/puertopme/inc/user_info.php')
+  .then(response => response.json())
+  .then(data => document.getElementById("login_photo").src=data[0].photo);
 </script>
 
 

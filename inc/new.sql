@@ -1,0 +1,23 @@
+CREATE TABLE employes_tbl(
+	id  INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	username VARCHAR(255) NOT NULL UNIQUE,
+	password VARCHAR(255) NOT NULL,
+	matricule CHAR(4) NOT NULL UNIQUE,
+	role VARCHAR(255) NOT NULL ,
+	firstName VARCHAR(255) NOT NULL,
+	lastname VARCHAR(255) NOT NULL,
+	email VARCHAR(255) NOT NULL,
+	cin VARCHAR(255) NOT NULL UNIQUE,
+	date_em date NOT NULL,
+	departement VARCHAR(255) NOT NULL,
+	fonction VARCHAR(255) NOT NULL,
+	responsable VARCHAR(255) NOT NULL,
+	burreaux VARCHAR(255) NOT NULL,
+	post VARCHAR(255) NOT NULL ,
+	address VARCHAR(255) NOT NULL,
+	photo VARCHAR(255) NOT NULL,
+	phone_portable VARCHAR(255) NOT NULL ,
+	phone_fix VARCHAR(255) NOT NULL ,
+	phone_extenstion VARCHAR(255) NOT NULL 
+);
+

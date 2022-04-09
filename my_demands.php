@@ -25,57 +25,12 @@
 </head>
 <body>
 <style>
-
-  td img {
-    width : 50px;
+.image-login {
+  width:50px;
     height : 50px;
-    border-radius : 50%;
-    object-fit : contain ;
-  }
-  table th , table td {
-    font-size : 10px;
-  }
-
-  .fa {
-    font-size :14px;
-  }
-  #tab_filter input[type=search]{
-    margin-right :50px;
-    border-radius: 0.25em !important;
-    border : 0.5px solid rgb(206, 212, 218);
-    outline : none ;
-    padding : 0.275em 0.75em;
-    color : #495057 ;
-  }
-  #tab_length label ,#tab_info{
-    font-size : 15px;
-  }
-  .fa {
-    cursor: pointer;
-  }
-  @media screen and (max-width:1460px) {
-    body {
-    
-    }
-    .main-menu {
-      height :150% !important;
-    }
-    #tab_length label ,#tab_info,#tab_paginate{
-    font-size : 12px;
-  }
-  #tab_filter input[type=search]{
-    width : 100px;
-    border-radius: 0.25em !important;
-    border : 0.5px solid rgb(206, 212, 218);
-    outline : none ;
-    padding : 0.375em 0.75em;
-    color : #495057 ;
-  }
-  }
-
-  .bold-label {
-    font-weight : bolder;
-  } 
+    border-radius :50%;
+    object-fit : cover ;
+}
 </style>
 <?php
 session_start();
@@ -90,7 +45,7 @@ if(isset($_SESSION['username'])) {
   </a>
   <div class="dropdown mr-5" style="padding-left: 0 100px">
   <button class="btn btn-secondary dropdown-toggle" style='background:none;border : none;'type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <img src="assets/imgs/default_login.png" alt=""> 
+    <img id="login_photo" class="image-login" src="assets/imgs/default_login.png" alt="">
     <span class="user_id" style="color : #8391A3"> <?php echo $_SESSION['username'].' / '.$_SESSION['departement'];?></span>
   </button>
   <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
@@ -110,6 +65,22 @@ if(isset($_SESSION['username'])) {
                         </span>
                     </a>
                 </li>
+                <?php
+                if(isset($_SESSION['departement'])){
+                  if($_SESSION['departement'] === 'IT'){
+                    echo '
+                    <li class="has-subnav">
+                    <a href="perm.php">
+                        <i class="fa fa-laptop fa-2x"></i>
+                        <span class="nav-text">
+                            Change les permistion
+                        </span>
+                    </a>
+                </li>
+                    ';
+                  }
+                }
+                ?>
                 <li class="has-subnav">
                     <a href="my_demands.php">
                        <i class="fa fa-list fa-2x"></i>
@@ -383,11 +354,6 @@ if(isset($_SESSION['username'])) {
             },
             {data:'status_rh',className:'data',"targets":[1],
                 "render":function(data){
-                    // if(status===''){
-                    //     l = innerHTML = '<b><span style="color : #d1b500">En attendant ...</span><b>';
-                    // }else {
-                    //     l =' YES';
-                    // }
                       if(data=='True'){
                         return innerHTML = '<b><span style="color : green">valider</span><b>';
                       }
@@ -460,6 +426,10 @@ let get_info= (elem)=>{
     document.getElementById("delete_demand").value=id;    
   }
 
+
+  fetch('http://localhost/puertopme/inc/user_info.php')
+.then(response => response.json())
+.then(data => document.getElementById("login_photo").src=data[0].photo);
 </script>
 
 </body>

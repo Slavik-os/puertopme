@@ -72,29 +72,60 @@
     color : #495057 ;
   }
   }
+  th {
+    font-size:10px !important;
+  }
+  td{
+  font-size:8px !important;
+}
+.image-login {
+    width:50px;
+    height : 50px;
+    border-radius :50%;
+    object-fit : cover ;
+}
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
 </style>
 <?php
 session_start();
 if(isset($_SESSION['username'])) {
     if ($_SESSION['role']=='responsable'){?>
-
 <div class="row">
 <nav class="navbar navbar_v justify-content-between flex-nowrap" style="background:#212121;border:none;position:; ;width:100% !important; z-index:5;">
 <a class="navbar-brand" href="#">
     <img src="assets/imgs/general-icon.png" width="40" height="40" class="d-inline-block align-top" alt="">
     <span class="nav-text" style="font-family:'Titillium Web'"> PUERTO TRANSIT </span>
   </a>
-  <div class="dropdown mr-5" style="padding-left: 0 100px">
+  <span style=" display:flex ;justify-content:center">
+  <div class="dropdown mt-3">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="color:#fff">
+         <i class="fas fa-bell"></i> <span class="counter counter-lg">9</span>&nbsp;&nbsp<span class="caret"></span>
+        </button>
+        
+        <div class="dropdown-menu dropdown-menu-lg-right dropdown" aria-labelledby="navbarDropdownMenuLink-5">
+              <a class="dropdown-item waves-effect waves-light" href="#">l`etat de emploi : Test_user a changer</a>
+    </div>
+    </div>
+  <div class="dropdown" style="padding-left: 0 100px">
   <button class="btn btn-secondary dropdown-toggle" style='background:none;border : none;'type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <img src="assets/imgs/default_login.png" alt=""> 
+    <img id="login_photo" class="image-login" src="assets/imgs/default_login.png" alt="">
     <span class="user_id" style="color : #8391A3"> <?php echo $_SESSION['username'].' / '.$_SESSION['departement'];?></span>
   </button>
   <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
     <a class="dropdown-item hover-drop" href="logout.php" ">LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
   </div>
-</div>
+    </span>
+    </div>
+    </div>
+
 </nav>
-</div>
+
+
+
 <div class="area" ></div>
 <nav class="main-menu" style="z-index:1;flex-nowrap">
             <ul>
@@ -106,7 +137,27 @@ if(isset($_SESSION['username'])) {
                         </span>
                     </a>
                 </li>
-                <li class="has-subnav">
+                <li>
+                  
+                </li>
+                <?php
+                if(isset($_SESSION['departement'])){
+                  if($_SESSION['departement'] === 'IT'){
+                    echo '
+                    <li class="has-subnav">
+                    <a href="perm.php">
+                        <i class="fa fa-laptop fa-2x"></i>
+                        <span class="nav-text">
+                            Change les permistion
+                        </span>
+                    </a>
+                </li>
+                    ';
+                  }
+                }
+
+                ?>
+                   <li class="has-subnav">
                     <a href="my_demands.php">
                        <i class="fa fa-list fa-2x"></i>
                         <span class="nav-text">
@@ -114,6 +165,7 @@ if(isset($_SESSION['username'])) {
                         </span>
                     </a>
                 </li>
+               
             <ul class="logout">
                 <li>
                    <a href="logout.php">
@@ -126,7 +178,10 @@ if(isset($_SESSION['username'])) {
             </ul>
         </nav>
 <div class="boxParent" style="margin: 10px 90px;">
-    <h1 class="txt-header" style="font-family:'Open Sans'">Ajouter des Employés</h1>
+  <?php
+  if($_SESSION['permission'] != 'none'){
+    echo '
+    <h1 class="txt-header" style="font-family:"Open Sans">Ajouter des Employés</h1>
     <button type="button" class="btn btn-primary my-3 px-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Ajouter </button>
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
@@ -162,7 +217,7 @@ if(isset($_SESSION['username'])) {
                 <input type="text" class="form-control" placeholder="..." name="email">
               </div>
               <div class="col-md-6">
-                <label for="recipient-name" class="col-form-label">Nom d'utilisateur :</label>
+                <label for="recipient-name" class="col-form-label">Nom d\'utilisateur :</label>
                 <input type="text" class="form-control" placeholder="..." name="username">
               </div>
               <div class="col-md-6">
@@ -176,7 +231,7 @@ if(isset($_SESSION['username'])) {
                 <input type="text" class="form-control" placeholder="..." name="cin">
               </div>
               <div class="col-md-6">
-                <label for="recipient-name" class="col-form-label">Date ad'embauche:</label>
+                <label for="recipient-name" class="col-form-label">Date ad\'embauche:</label>
                 <input type="date" class="form-control" placeholder="..." name="date_em">
               </div>
             </div><!--  row end -->
@@ -218,10 +273,7 @@ if(isset($_SESSION['username'])) {
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Département : </label>
                 <select class="form-select"  name="departements">
-                  <option selected disabled>Selectionner une Département</option>
-                  <option value="IT">IT</option>
-                  <option value="RH">RH</option>
-                  <option value="Finance">FINANCE</option>
+                  <option value="'.$_SESSION['departement'].'">'.$_SESSION['departement'].'</option>
                 </select>
               </div>
               <div class="col-md-6">
@@ -238,17 +290,17 @@ if(isset($_SESSION['username'])) {
         
       </div>
       <div class="modal-footer">
-        <input type="submit" value="Ajouter" name="submit" class="btn btn-primary" onclick="create_recode()">
-        <input type="hidden"  name="add" value="add">
+        <input type="submit" value="Ajouter" name="submit" class="btn btn-primary">
+        <input type="hidden" name="add" value="add">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-      </div>
-      </form>
+        </div>
+        </form>
         </div>
       </div>
       </div>
      </div> <!-- modal End -->
      <!-- Add employee Modal End!-->
-      
+
      <!-- edit Modal -->
      <div class="modal fade bd-example-modal-lg" id="exampleModal2"="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
@@ -294,37 +346,41 @@ if(isset($_SESSION['username'])) {
             </div>
 
             <div class="row">
+            <div class="col-md-6">
+            <label for="recipient-name" class="col-form-label">Address</label>
+              <input type="text" class="form-control" name="address" id="address">
+            </div>
+              '; if($_SESSION['departement']=='IT'){echo '
               <div class="col-md-6">
-                <label for="recipient-name" class="col-form-label">Date d'embauche</label>
+                <label for="recipient-name" class="col-form-label">Date d\'embauche</label>
                 <input type="date" class="form-control" name="date_em" id="date_em">
               </div>
-              <div class="col-md-6">
-              <label for="recipient-name" class="col-form-label">Address</label>
-                <input type="text" class="form-control" name="address" id="address">
-              </div>
+              ';}echo'
+            
             </div>
             <div class="row">
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Departement</label>
                 <select class="form-select"  id="departement" name="departements">
-                  <option selected disabled>Selectionner une Département</option>
-                  <option value="IT">IT</option>
-                  <option value="RH">RH</option>
-                  <option value="FINANCE">Finance</option>
+                  
                 </select>
               </div>
               <div class="col-md-6">
+              '; if($_SESSION['departement']=='IT'){ echo' 
               <label for="recipient-name" class="col-form-label">Fonction</label>
                 <input type="text" class="form-control" name="fonction" id="fonction">
-              </div>
+              ';} echo '
             </div>
-
+            </div>
             <div class="row">
               <div class="col-md-6">
+                '; if ($_SESSION['departement'] == 'IT'){echo'
                 <label for="recipient-name" class="col-form-label">Post</label>
-                <input type="text" class="form-control" name="post" id="post">
+                <input type="text" class="form-control" name="post" id="post">';}echo'
               </div>
               <div class="col-md-6">
+              ';if($_SESSION['departement']=='IT'){
+                echo'
               <label for="recipient-name" class="col-form-label">Burreaux</label>
                 <input type="text" class="form-control" name="bureaux" id="burreaux">
               </div>
@@ -332,19 +388,26 @@ if(isset($_SESSION['username'])) {
 
             <div class="row">
               <div class="col-md-6">
+                ';}if($_SESSION['departement'] == 'IT'){echo'
                 <label for="recipient-name" class="col-form-label">Telephone</label>
-                <input type="text" class="form-control" name="phone_portable" id="tele_portable">
+                <input type="text" class="form-control" name="phone_portable" id="tele_portable">';};echo'
               </div>
               <div class="col-md-6">
+              ';if($_SESSION['departement'] == 'IT'){
+                echo '
               <label for="recipient-name" class="col-form-label">Extenstion</label>
-                <input type="text" class="form-control" name="numero_extenstion" id="extenstion">
+                <input type="text" class="form-control" name="numero_extenstion" id="extenstion">';}echo'
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
+              ';if($_SESSION['departement']=='IT'){echo'
               <label for="recipient-name" class="col-form-label">Fix Direct</label>
                 <input type="text" class="form-control" name="numero_fix" id="fix_direct">
                 <input type="hidden" value="edit">
+                <input type="hidden" value="old_name">
+                ';
+              }echo'
               </div>
             </div>
           </div>
@@ -352,6 +415,7 @@ if(isset($_SESSION['username'])) {
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <input type="hidden"  name="edit" id="hidden" value="">
+        <input type="hidden"  name="old_name" id="old_name" value="">
         <input type="submit" class="btn btn-primary"  value="sauvegarder">
         </form>
       </div>
@@ -359,6 +423,20 @@ if(isset($_SESSION['username'])) {
   </div>
 </div>
      <!-- edit Modal end -->
+
+
+
+
+
+
+
+
+
+
+    ';
+  }
+  
+  ?>  
     <?php
      if (isset($_GET['submit'])){
         echo '<div class="alert alert-danger" role="alert">
@@ -379,7 +457,7 @@ if(isset($_SESSION['username'])) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Supprimer un Employee</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer Employee</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <form action="add.php" method="POST">
           <span aria-hidden="true">&times;</span>
@@ -390,8 +468,8 @@ if(isset($_SESSION['username'])) {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <input type="submit" class="btn btn-danger" value="Confirmer">
         <input type="hidden" id="delete_em" name="delete" value="">
+        <input type="submit" class="btn btn-danger" value="Confirmer">
         </form>
       </div>
     </div>
@@ -402,6 +480,46 @@ if(isset($_SESSION['username'])) {
 <!-- delete Modal end -->
 
 
+<!-- employee Status -->
+<form action="inc/employee_status.php" method="POST">
+<div class="modal fade" id="status_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier status D'employee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <select class="form-select" name="status" id="">
+              <option value="active">Active</option>
+              <option value="Chômage">Chômage</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+        <div class="form-group">
+    <label for="exampleFormControlTextarea1">Example textarea</label>
+    <textarea class="form-control" name="comment" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" value="changer" class="btn btn-primary">
+        <input type="hidden" name="matricule" id="status_em_hidden" value="">
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+<!-- employee Status end -->
+
+
   <div class="table-responsive mt-4">
      <table id="tab" class="display" cellspacing="0" width="100%">
         <thead>
@@ -410,6 +528,7 @@ if(isset($_SESSION['username'])) {
                 <th>Photo</th>
                 <th>Nom</th>
                 <th>Prénom</th>
+                <th>L'état de employés</th>
                 <th>CIN</th>
                 <th>Email</th>
                 <th>Date d'embauche</th>
@@ -420,8 +539,9 @@ if(isset($_SESSION['username'])) {
                 <th>Post</th>
                 <th>Bureaux</th>
                 <th>Telephone</th>
-                <th>extention</th>
                 <th>Fix :</th>
+                <th>extention</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -448,6 +568,8 @@ if(isset($_SESSION['username'])) {
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+<script src="DataTables-Hide-Empty-Columns/dataTables.hideEmptyColumns.js"></script>
+<script src="DataTables-Hide-Empty-Columns/dataTables.hideEmptyColumns.min.js"></script>
 <script type="text/javascript">
   // inputs :
 let matricule = document.getElementById('matricule');
@@ -465,24 +587,23 @@ let burreaux = document.getElementById("burreaux");
 let telephone = document.getElementById("tele_portable");
 let extenstion = document.getElementById("extenstion");
 let fix = document.getElementById("fix_direct");
+let set_status = (elem)=>{
+  let table_elements = elem.parentElement.parentElement.children ; 
+  let hidden = document.getElementById('status_em_hidden');
+  hidden.value =  table_elements[0].innerText;
+  // console.log(table_elements[0].innerText);
+}
 let edit = (elem)=>{
     let table_elements = elem.parentElement.parentElement.children ; 
-    matricule.value =  table_elements[0].innerHTML;
-    firstname.value  = table_elements[2].innerHTML;
-    secondname.value = table_elements[3].innerHTML;
-    cin.value  = table_elements[4].innerHTML;
-    email.value = table_elements[5].innerHTML;
-    date_em.value = table_elements[6].innerHTML;
-    address.value = table_elements[7].innerHTML;
-    
-    switch(table_elements[8].innerHTML){
+    matricule.value =  table_elements[0].innerText;
+    switch(table_elements[9].innerText.toUpperCase()){
         case 'FINANCE': 
             departemenet.innerHTML = `
             <select class="form-select"  id="departement" name="departements">
                   <option selected disabled>Selectionner une Département</option>
                   <option value="IT">IT</option>
                   <option value="RH">RH</option>
-                  <option value="FINANCE" selected>Finance</option>
+                  <option value="FINANCE" selected>FINANCE</option>
                 </select>
             `
             break;
@@ -507,69 +628,258 @@ let edit = (elem)=>{
             `
             break; 
     }
+        function find(elm,data){
+          for(let i=0;i < data.length;i++){
+            if (data[i].matricule == elm){
+              return data[i];
+            }
+          }
+        }
+        function check_null(elm){
+          if (elm == null) {
+            elm =  '';
+          }
+          return elm;
+        }
+        async function getData(url="http://localhost/puertopme/inc/src.php"){
+                let req = await fetch(url,{
+                        methd : 'GET',
+                        cache : 'no-cache',
+                        headers : {
+                                'Content-Type' : 'application/json',
+                        }
+                        });
+                        return req.json();
+                }
 
-    fonction.value = table_elements[10].innerHTML;
-    post.value = table_elements[11].innerHTML;
-    burreaux.value = table_elements[12].innerHTML;
-    telephone.value = table_elements[13].innerHTML;
-    extenstion.value = table_elements[14].innerHTML;
-    fix.value = table_elements[15].innerHTML;
-    document.getElementById("hidden").value=table_elements[0].innerHTML;
+        
+        getData().then((data)=>{
+          let s = find(table_elements[0].innerText,data);
+          (firstname==null)?x=true:firstname.value=check_null(s.firstName);
+          (secondname==null)?x=true:secondname.value=check_null(s.lastname);
+          (cin==null)?x=true:cin.value=check_null(s.cin);
+          (fonction==null)?x=true:fonction.value=check_null(s.fonction);
+          (email==null)?x=true:email.value=check_null(s.email);
+          (date_em==null)?x=true:date_em.value=check_null(s.date_em);
+          (address==null)?x=true:address.value=check_null(s.date_em);
+          (post==null)?x=true:post.value=check_null(s.post);
+          (burreaux==null)?x=true:burreaux.value=check_null(s.burreaux);
+          (telephone==null)?x=true:telephone.value=check_null(s.phone_portable);
+          (extenstion==null)?x=true:extenstion.value=check_null(s.phone_extenstion);
+          (fix==null)?x=true:fix.value=check_null(s.phone_fix);
+        });
+
+  
+
+    let old_mat = table_elements[0].innerText;
+    document.getElementById("hidden").value=table_elements[0].innerText;
+    let old_name = elem.parentElement.parentElement.children[2].innerText;
+    document.getElementById("old_name").value =old_name;
     
 }
 let remove = (elem)=>{
-    document.getElementById("delete_em").value = elem.parentElement.parentElement.children[0].innerHTML;
-  
+    let old_mat = elem.parentElement.parentElement.children[0].innerText;
+    document.getElementById("delete_em").value = old_mat ;
 }
 </script>
 <script type="text/javascript">
    $(document).ready(()=>{
-        
         $("#tab").DataTable({
+          stateSave:true,
           scrollY:"200px",
-          
+          scrollX:"100%",
+          hideEmptyCols: true,
           "responsive":true,
           "ajax":{
             'url':"inc/src.php",
-            'method':"post",
+            'method':"get",
             "dataSrc" :"",
           },
           "columns":[
-            {data:"matricule"},
+            {data:"matricule","render": function (data, type, row, meta ) {
+              if(row.etat==="active"){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+             } 
+            },
             {data:"photo",
             "render":function(data){
               return '<img src="'+data+'">'
             }
             },
-            {data:"firstName"},
-            {data:"lastname"},
-            {data:"cin"},
-            {data:"email"},
-            {data:"date_em"},
-            {data:"address"},
-            {data:"departement"},
-            {data:"responsable_name"},
-            {data:"fonction"},
-            {data:"post"},
-            {data:"burreaux"},
-            {data:"phone_portable"},
-            {data:"phone_fix"},
-            {data:"phone_extenstion"},
+            {data:"firstName",
+              "render": function (data, type, row, meta ) {
+              if(row.etat==="active"){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+             }
+            ,defaultContent:""},
+            {data:"lastname","render": function (data, type, row, meta ) {
+              if(row.etat==="active"){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+             } ,defaultContent:""},
+            {data:"etat","render":function(data){
+              if(data=="active" || data=="Active"){
+                return `<img src="assets/imgs/active_icon.png" style="width:20px;height:20px; object-fit:cover"> `+data;
+              }else {
+                return `<img src="assets/imgs/chomage.png" style="width:20px;height:20px; object-fit:cover"> `+data;
+              }
+            },defaultContent:""},
+            {data:"cin" ,"render": function (data, type, row, meta ) {
+              if(row.etat==="active"){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+             } ,defaultContent:""},
+            {data:"email" ,"render":function(data,type,row,meta){
+              if(data=='.....'){
+                return innerHTML='<b><span style="color : red">EMPTY</span><b>';
+              }else if(row.etat!='active') {
+                return '<span style="color : red">'+data+'</span>';
+              }else {
+                return data;
+              }
+              },defaultContent:""},
+            {data:"date_em","render": function (data, type, row, meta ) {
+              if(row.etat==="active"){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+             } ,defaultContent:""},
+            {data:"address","render": function (data, type, row, meta ) {
+              if(row.etat==="active"){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+             }
+            ,defaultContent:""},
+            {data:"departement","render": function (data, type, row, meta ) {
+              if(row.etat==="active"){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+             },defaultContent:""},
+            {data:"responsable_name" ,"render": function (data, type, row, meta ) {
+              if(row.etat==="active"){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+             },defaultContent:""},
+            {data:"fonction" ,"render":function(data,type,row,meta){
+              if(data=='.....'){
+                return innerHTML='<b><span style="color : red">EMPTY</span><b>';
+              }else if(row.etat!='active') {
+                return '<span style="color : red">'+data+'</span>';
+              }else {
+                return data;
+              }
+              },defaultContent:""},
+            {data:"post" ,"render":function(data,type,row,meta){
+              if(data=='.....'){
+                return innerHTML='<b><span style="color : red">EMPTY</span><b>';
+              }else if(row.etat!='active') {
+                return '<span style="color : red">'+data+'</span>';
+              }else {
+                return data;
+              }
+              },defaultContent:""},
+            {data:"burreaux" ,"render":function(data,type,row,meta){
+              if(data=='.....'){
+                return innerHTML='<b><span style="color : red">EMPTY</span><b>';
+              }else if(row.etat!='active') {
+                return '<span style="color : red">'+data+'</span>';
+              }else {
+                return data;
+              }
+              },defaultContent:""},
+            {data:"phone_portable","render":function(data,type,row,meta){
+              if(data=='.....'){
+                return innerHTML='<b><span style="color : red">EMPTY</span><b>';
+              }else if(row.etat!='active') {
+                return '<span style="color : red">'+data+'</span>';
+              }else {
+                return data;
+              }
+              },defaultContent:""},
+            {data:"phone_fix","render":function(data,type,row,meta){
+              if(data=='.....'){
+                return innerHTML='<b><span style="color : red">EMPTY</span><b>';
+              }else if(row.etat!='active') {
+                return '<span style="color : red">'+data+'</span>';
+              }else {
+                return data;
+              }
+              },defaultContent:""},
+            {data:"phone_extenstion","render":function(data,type,row,meta){
+              if(data=='.....'){
+                return innerHTML='<b><span style="color : red">EMPTY</span><b>';
+              }else if(row.etat!='active') {
+                return '<span style="color : red">'+data+'</span>';
+              }else {
+                return data;
+              }
+              },defaultContent:""},
             
+  
             {
                 data: null,
                 className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-pencil" onclick="edit(this)" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>',
+                defaultContent: `
+                <?php if($_SESSION['permission'] != 'none'){
+                 echo '<i class="fa fa-pencil" onclick="edit(this)" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>';
+                }?>
+                
+                `,
                 orderable: false
-            },{
+            },
+            {
+              data:null,
+              className: "dt-center editor-status",
+              defaultContent:`
+              <?php 
+              
+              if($_SESSION['departement']=='RH'){
+                echo '<i style="font-size:15px; color:#2d302e;cursor:pointer" onclick="set_status(this)" data-toggle="modal" data-target="#status_modal" class="fa-solid fa-user"></i>';
+              }
+              ?>
+              `
+            }
+            ,{
                 data: null,
                 className: "dt-center editor-edit",
-                defaultContent: '<i class="fa fa-trash" data-toggle="modal" onclick="remove(this)" data-target="#exampleModal3"/>',
+                defaultContent: `
+                <?php if($_SESSION['permission'] != 'none'){
+                 echo '<i class="fa fa-trash" data-toggle="modal" onclick="remove(this)" data-target="#exampleModal3"/>';
+                }?>
+                
+                
+                
+                `,
                 orderable: false
             }            
           ],  
         }
-        )});
+        )
+   });
+   
+
+   fetch('http://localhost/puertopme/inc/user_info.php')
+  .then(response => response.json())
+  .then(data => document.getElementById("login_photo").src=data[0].photo);
+
+
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
@@ -578,6 +888,15 @@ $(document).ready(function(){
     });
   });
 });
+
+
+let url = "http://localhost/puertopme/inc/src.php";
+   async function loadNames() {
+    const response = await fetch(url);
+    const names = await response.json();
+   }
+   loadNames();
+
 </script>
 </body>
 <html>

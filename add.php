@@ -48,6 +48,7 @@
        }
        
    }
+   echo (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file));
 //    echo $target_file;
     //  record user data
     $matricule = mysqli_real_escape_string($con,$_POST['matricule']);
@@ -68,6 +69,7 @@
     $bureaux = mysqli_real_escape_string($con,$_POST['bureaux']);
     $post = mysqli_real_escape_string($con,$_POST['post']);
     $old_mat = mysqli_real_escape_string($con,$_POST['edit']);
+    $old_f_name = mysqli_real_escape_string($con,$_POST['old_name']);
     $mat_delete = mysqli_real_escape_string($con,$_POST['delete']);
     
     // record user data end
@@ -97,7 +99,7 @@
                             $matricule,$firstname,$lastname,$photo,$email,
                             $username,$password,$cin,$date_em,$departements,$bureaux,$post,
                             $fonction,$address,$phone_portable,$phone_extenstion,
-                            $phone_fix,$old_mat,$mat_delete)
+                            $phone_fix,$old_mat,$old_f_name,$mat_delete)
                             {
                                 $this->matricule = $matricule;
                                 $this->firstname = $firstname;
@@ -117,8 +119,14 @@
                                 $this->bureaux = $bureaux;
                                 $this->post = $post;
                                 $this->old_mat = $old_mat;
+                                $this->old_f_name = $old_f_name;
                                 $this-> mat_delete = $mat_delete;
                                 $this->con=mysqli_connect("localhost","root","nomads","puerto_dbs"); // reconnect via oop
+                                if($this->date_em == ''){
+                                    $this->date_em = '0000-00-00';
+                                }else{
+                                    $this->date_em = $this->date_em;
+                                }
                             }
         public function check_for_dup($check,$string,$message){
             $this->query="SELECT $check FROM employes_tbl WHERE $check = '$string'";
@@ -128,38 +136,52 @@
                 array_push($this->listOfErrors,$message);
             }
         }
+        public function check_empty($string){
+            if(empty($string)){
+                return '.....';
+            }else {
+                return $string;
+            }
+        }
         function create_new_recode(){
             // check if duplication exists :
-           
+
             $this->check_for_dup('matricule',$this->matricule,'Matricule');
-            $this->check_for_dup('username',$this->username,'username');
             $this->check_for_dup('cin',$this->cin,'cin');
             $this->check_for_dup('email',$this->email,'email');
-            $this->check_for_dup('phone_portable',$this->phone_portable,'Numero (Portable)');
-            $this->check_for_dup('phone_portable',$this->phone_extenstion,'Numero d`extention');
-            $this->check_for_dup('phone_portable',$this->phone_extenstion,'Numero Fix');
+            $this->bureaux = $this->check_empty($this->bureaux);
+            $this->post = $this->check_empty($this->post);
+            $this->fonction = $this->check_empty($this->fonction);
+            $this->phone_extenstion = $this->check_empty($this->phone_extenstion);
+            $this->phone_fix = $this->check_empty($this->phone_fix);
+            $this->address = $this->check_empty($this->address);
+
+           
+            if($this->photo=='uploads/'){
+                $this->photo='uploads/default-user-icon-13.jpeg';
+            }
+            $this->phone_portable = $this->check_empty($this->phone_portable);
            if(sizeof($this->listOfErrors) === 0 ){
             $this->query ="DROP TABLE IF EXISTS puerto_dbs.departments ;
             CREATE TABLE departments( SELECT id,firstName,lastName,departement 
             FROM employes_tbl WHERE role='responsable');
             ";
             $this->con->query($this->query);
+                
                $this->query=("INSERT INTO employes_tbl(
-                matricule,firstName,lastname,photo,email,username,password,
+                matricule,firstName,lastname,photo,email,password,
                 cin,date_em,departement,burreaux,post,fonction,address,
                 phone_portable,phone_extenstion,phone_fix,role)
                 VALUES(
                     '$this->matricule','$this->firstname','$this->lastname','$this->photo','$this->email',
-                    '$this->username','".md5($this->password)."','$this->cin'
+                    '".md5($this->password)."','$this->cin'
                     ,DATE_FORMAT('$this->date_em','%Y-%m-%d'),'$this->departements','$this->bureaux'
                     ,'$this->post','$this->fonction','$this->address','$this->phone_portable',
                     '$this->phone_extenstion','$this->phone_fix','')
                  ");
-                 
                  $this->result =  mysqli_query($this->con,$this->query);
                  $this->con->query($this->query);
-                 header("Location:index.php?success=Success !");
-                
+                 header("Location:index.php?success=Success !");                
            }else {
             $this->err_string ='';
             foreach($this->listOfErrors as $l){
@@ -171,16 +193,30 @@
         }
 
         function edit_recorde(){
+            // Update departements  ;
                 $this->query ="DROP TABLE IF EXISTS puerto_dbs.departments ;
                 CREATE TABLE departments( SELECT id,firstName,lastName,departement 
                 FROM employes_tbl WHERE role='responsable');
                 ";
+                 // update responsable name in permissions if edited 
+                 $this->sql = "SELECT role from employes_tbl WHERE matricule = '$this->old_mat'";
+                 $this->result = $this->con->query($this->sql);
+                 while($row = mysqli_fetch_assoc($this->result)){
+                     $check_if_resp = $row['role'];
+                 }
+                if ($check_if_resp == 'responsable'){
+                 $sql = "
+                 UPDATE permissions SET responsable_depar ='$this->firstname' WHERE  responsable_depar ='$this->old_f_name'
+                 ";
+                 $this->con->query($sql);
+                }
+                
                 $this->con->query($this->query);
+                if ($_SESSION['departement'] == 'IT'){
                 $this->query = "UPDATE employes_tbl SET
                     matricule = '$this->matricule',
                     firstName = '$this->firstname',
                     lastname  = '$this->lastname',
-                    cin = '$this->cin',
                     email = '$this->email',
                     date_em = '$this->date_em',
                     photo = '$this->photo',
@@ -191,12 +227,26 @@
                     burreaux = '$this->bureaux',
                     phone_portable = '$this->phone_portable',
                     phone_extenstion = '$this->phone_extenstion',
-                    phone_fix = '$this->phone_fix' WHERE  matricule = '$this->old_mat';
+                    phone_fix = '$this->phone_fix' WHERE  matricule = '$this->old_mat'; 
                 ";
-                $this->query;
-                $this->con->query($this->query);
+                }
+                else {
+                    $this->query = "UPDATE employes_tbl SET
+                    matricule = '$this->matricule',
+                    firstName = '$this->firstname',
+                    lastname  = '$this->lastname',
+                    email = '$this->email',
+                    photo = '$this->photo',
+                    address = '$this->address',
+                    departement = '$this->departements' WHERE matricule= '$this->old_mat';
+                ";
 
+                }
+                $this->query;
+                // echo 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH '.$this->query;
+                $this->con->query($this->query);
                 header("Location:index.php?success=Modifier Success !");
+            
                 
         }
         
@@ -210,6 +260,7 @@
                 $this->query = "DELETE FROM employes_tbl WHERE matricule = '$this->mat_delete'";
                 $this->con->query($this->query);
                 header("Location:index.php?success=Modifier Success !");
+                echo $this->query;
                 
                }else{
                  header("Location:index.php?submit=Vous peuvez pas supprimer un responsable!");
@@ -225,7 +276,7 @@ $employee = new Employee(
                         $matricule,$firstname,$lastname,$photo,
                         $email,$username,$password,$cin,
                         $date_em,$departements,$bureaux,$post,$fonction,$address,$phone_portable,
-                        $numero_extenstion,$numero_fix,$old_mat,$mat_delete
+                        $numero_extenstion,$numero_fix,$old_mat,$old_f_name,$mat_delete
                     );
                     
 
@@ -238,7 +289,6 @@ if(isset($_POST['edit'])){
 }
 if(isset($_POST['delete'])){
     $employee->delete_recorde($_POST['delete']);
-    // echo $_POST['delete'];
 }
 
 

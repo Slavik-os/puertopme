@@ -72,6 +72,7 @@
 table {
     font-size : 12px !important;
 }
+
 @keyframes loading-form {
     from {opacity: 0;}
     to {opacity: 1;}

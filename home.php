@@ -72,6 +72,12 @@
     color : #495057 ;
   }
   }
+  .image-login {
+    width:50px;
+    height : 50px;
+    border-radius :50%;
+    object-fit : cover ;
+  }
 </style>
 <?php
 session_start();
@@ -87,7 +93,7 @@ if(isset($_SESSION['username'])) {
   </a>
   <div class="dropdown mr-5" style="padding-left: 0 100px">
   <button class="btn btn-secondary dropdown-toggle" style='background:none;border : none;'type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <img src="assets/imgs/default_login.png" alt=""> 
+  <img id="login_photo" class="image-login" src="assets/imgs/default_login.png" alt="">
     <span class="user_id" style="color : #8391A3;"><?php echo $_SESSION['username'];?> | <?php echo $_SESSION['departement'];?></span>
   </button>
   <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
@@ -411,11 +417,15 @@ $(document).ready(function(){
         w.document.writeln(absence(result));
        break;
     }
-  });
-  
- 
-    
+  });  
 }
+
+
+
+fetch('http://localhost/puertopme/inc/user_info.php')
+  .then(response => response.json())
+  .then(data => document.getElementById("login_photo").src=data[0].photo);
+
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
