@@ -6,21 +6,24 @@ $matricule = $_POST['matricule'];
 $responsable_name = $_SESSION['firstName'];
 $today_date = date("Y-m-d");
 // get employee info
-$sql = "SELECT firstname,lastname FROM employes_tbl WHERE matricule='$matricule'";
+$sql = "SELECT firstname,lastname,photo FROM employes_tbl WHERE matricule='$matricule'";
 $result = mysqli_query($con,$sql);
 while($row = mysqli_fetch_assoc($result)){
     $first_name = $row['firstname']; 
     $last_name = $row['lastname'];
+    $photo = $row['photo'];
 }
 
+if($status !='active') {
 $sql ="INSERT INTO employee_status VALUES(
-    '$matricule','$responsable_name','$status','$first_name','$last_name','$comment','$today_date'
+    '$matricule','$status','$comment','$today_date','$first_name','$last_name','$photo'
 )";
+echo $sql;
 mysqli_query($con,$sql);
-
+}
 // change employee status 
 
 $sql ="UPDATE employes_tbl SET etat='$status' WHERE matricule='$matricule'";
 mysqli_query($con,$sql);
-header("Location:../index.php?success=Modifier Success !")
+header("Location:../index.php?success=Modifier Success !");
 ?>

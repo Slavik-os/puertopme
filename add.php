@@ -58,6 +58,7 @@
     $username = mysqli_real_escape_string($con,$_POST['username']);
     $password = mysqli_real_escape_string($con,$_POST['password']);
     $cin = mysqli_real_escape_string($con,$_POST['cin']);
+    $date_birth = mysqli_real_escape_string($con,$_POST['date_birth']);
     $date_em =mysqli_real_escape_string($con,$_POST['date_em']);
     $address =mysqli_real_escape_string($con,$_POST['address']);
     $photo = mysqli_real_escape_string($con,$target_file);
@@ -81,6 +82,7 @@
          public $email;
          public $username;
          public $cin;
+         public $date_naissance;
          public $date_em;
          public $address;
          public $photo;
@@ -97,7 +99,7 @@
          private $con;
         function __construct(
                             $matricule,$firstname,$lastname,$photo,$email,
-                            $username,$password,$cin,$date_em,$departements,$bureaux,$post,
+                            $username,$password,$cin,$date_naissance,$date_em,$departements,$bureaux,$post,
                             $fonction,$address,$phone_portable,$phone_extenstion,
                             $phone_fix,$old_mat,$old_f_name,$mat_delete)
                             {
@@ -109,6 +111,7 @@
                                 $this->username  = $username;
                                 $this->password  = $password;
                                 $this->cin       = $cin;
+                                $this->date_naissance = $date_naissance;
                                 $this->date_em   = $date_em;
                                 $this->address   = $address;
                                 $this->phone_portable  = $phone_portable;
@@ -121,7 +124,7 @@
                                 $this->old_mat = $old_mat;
                                 $this->old_f_name = $old_f_name;
                                 $this-> mat_delete = $mat_delete;
-                                $this->con=mysqli_connect("localhost","root","nomads","puerto_dbs"); // reconnect via oop
+                                $this->con=mysqli_connect("localhost","root","","puerto_dbs"); // reconnect via oop
                                 if($this->date_em == ''){
                                     $this->date_em = '0000-00-00';
                                 }else{
@@ -167,18 +170,20 @@
             FROM employes_tbl WHERE role='responsable');
             ";
             $this->con->query($this->query);
-                
+                $this->password = md5($this->password);
+                echo $this->password;
                $this->query=("INSERT INTO employes_tbl(
-                matricule,firstName,lastname,photo,email,password,
-                cin,date_em,departement,burreaux,post,fonction,address,
+                matricule,firstName,lastname,photo,email,username,password,
+                cin,date_nessance,date_em,departement,burreaux,post,fonction,address,
                 phone_portable,phone_extenstion,phone_fix,role)
                 VALUES(
-                    '$this->matricule','$this->firstname','$this->lastname','$this->photo','$this->email',
-                    '".md5($this->password)."','$this->cin'
-                    ,DATE_FORMAT('$this->date_em','%Y-%m-%d'),'$this->departements','$this->bureaux'
+                    '$this->matricule','$this->firstname','$this->lastname','$this->photo','$this->email','$this->username',
+                    '$this->password','$this->cin',DATE_FORMAT('$this->date_em','%Y-%m-%d'),
+                     DATE_FORMAT('$this->date_em','%Y-%m-%d'),'$this->departements','$this->bureaux'
                     ,'$this->post','$this->fonction','$this->address','$this->phone_portable',
                     '$this->phone_extenstion','$this->phone_fix','')
                  ");
+                 echo $this->query;
                  $this->result =  mysqli_query($this->con,$this->query);
                  $this->con->query($this->query);
                  header("Location:index.php?success=Success !");                
@@ -208,6 +213,7 @@
                  $sql = "
                  UPDATE permissions SET responsable_depar ='$this->firstname' WHERE  responsable_depar ='$this->old_f_name'
                  ";
+                
                  $this->con->query($sql);
                 }
                 
@@ -219,7 +225,7 @@
                     lastname  = '$this->lastname',
                     email = '$this->email',
                     date_em = '$this->date_em',
-                    photo = '$this->photo',
+                    date_nessance = DATE_FORMAT('$this->date_naissance','%Y-%m-%d'),
                     address = '$this->address',
                     departement = '$this->departements',
                     fonction = '$this->fonction',
@@ -235,15 +241,14 @@
                     matricule = '$this->matricule',
                     firstName = '$this->firstname',
                     lastname  = '$this->lastname',
+                    date_nessance = DATE_FORMAT('$this->date_naissance','%Y-%m-%d'),
                     email = '$this->email',
-                    photo = '$this->photo',
                     address = '$this->address',
                     departement = '$this->departements' WHERE matricule= '$this->old_mat';
                 ";
 
                 }
                 $this->query;
-                // echo 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH '.$this->query;
                 $this->con->query($this->query);
                 header("Location:index.php?success=Modifier Success !");
             
@@ -260,8 +265,6 @@
                 $this->query = "DELETE FROM employes_tbl WHERE matricule = '$this->mat_delete'";
                 $this->con->query($this->query);
                 header("Location:index.php?success=Modifier Success !");
-                echo $this->query;
-                
                }else{
                  header("Location:index.php?submit=Vous peuvez pas supprimer un responsable!");
                 die();
@@ -274,7 +277,7 @@
   
 $employee = new Employee(
                         $matricule,$firstname,$lastname,$photo,
-                        $email,$username,$password,$cin,
+                        $email,$username,$password,$cin,$date_birth,
                         $date_em,$departements,$bureaux,$post,$fonction,$address,$phone_portable,
                         $numero_extenstion,$numero_fix,$old_mat,$old_f_name,$mat_delete
                     );
@@ -330,7 +333,7 @@ class Congee {
                         $this->created_date = $created_date;
                         $this->heur_start = $heur_start;
                         $this->heur_end = $heur_end;
-                        $this->con=mysqli_connect("localhost","root","nomads","puerto_dbs"); // reconnect via oop
+                        $this->con=mysqli_connect("localhost","root","","puerto_dbs"); // reconnect via oop
                        
 
                         }
@@ -341,7 +344,7 @@ class Congee {
             $this->query =("
             INSERT INTO demands (employee_id,responsable_id,matricule_employee,firstName,lastname,type_demand,departement,date_start,date_end,heur_start,heur_end,
             replacement,status,fonction,justification,created_date)VALUES(
-            $this->employee_id,$this->responsable_id,'$this->matricule','$this->firstName','$this->lastname','$this->type_demand','$this->department',
+            $this->employee_id,$this->responsable_id,'$this->matricule','$this->firstName','$this->lastname','$this->type_demand','$this->departement',
             DATE_FORMAT('$this->date_start','%Y-%m-%d'),DATE_FORMAT('$this->date_end','%Y-%m-%d'),
             '$this->heur_start','$this->heur_end','$this->replacement',NUll,'$this->fonction','$this->justification',DATE_FORMAT('$this->created_date','%Y-%m-%d'));
                         

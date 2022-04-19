@@ -20,6 +20,7 @@ if(isset( $_POST['password']) && isset($_POST['username'])){
          $sql = "SELECT username,password,lastname,firstName,matricule,
          id,role,departement,fonction,status FROM employes_tbl WHERE username = '$username'  AND 
                  password = '$password'";
+                 echo $sql;
          $result = mysqli_query($con,$sql);
          if(mysqli_num_rows($result) === 1){
              $row = mysqli_fetch_assoc($result);
@@ -32,11 +33,13 @@ if(isset( $_POST['password']) && isset($_POST['username'])){
                 $_SESSION['fonction'] = $row['fonction'];
                 $_SESSION['lastname'] = $row['lastname'];
                 $_SESSION['matricule'] = $row['matricule'];
+                $_SESSION['status'] = $row['status'];
                 $status = $row['status'];
                 if($status == ""){
                   header("Location:../redirect.php");
                 }else {
                   header("Location:../login.php?error=Not activated !");
+             
                 }
                 
               }

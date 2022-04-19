@@ -48,8 +48,8 @@ if(isset($_SESSION['departement'])){
   <img id="login_photo" class="image-login" src="assets/imgs/default_login.png" alt="">
     <span class="user_id" style="color : #8391A3"> <?php echo $_SESSION['username'].' / '.$_SESSION['departement'];?></span>
   </button>
-  <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
-    <a class="dropdown-item hover-drop" href="logout.php" ">LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+  <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" >
+    <a class="dropdown-item hover-drop" href="logout.php" >LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
 </div>
 </div>
 </nav>

@@ -57,8 +57,6 @@ CREATE TABLE permissions(
 CREATE TABLE employee_status(
 	matricule VARCHAR(255) NOT NULL,
 	status VARCHAR(255) NOT NULL,
-	firstname VARCHAR(255) NOT NULL,
-	lastname VARCHAR(255) NOT NULL,
-	comment VARCHAR(255) NOT NULL
-	date_perm date NOT NULL,
+	comment VARCHAR(255) NOT NULL,
+	date_perm date NOT NULL
 );

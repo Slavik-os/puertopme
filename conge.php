@@ -112,7 +112,7 @@ if(isset($_SESSION['username'])) {
 <nav class="main-menu" style="z-index:1;flex-nowrap">
             <ul>
                 <li>
-                    <a href="http://justinfarrow.com">
+                    <a href="home.php">
                         <i class="fa fa-home fa-2x"></i>
                         <span class="nav-text">
                             Dashboard

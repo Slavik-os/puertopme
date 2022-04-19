@@ -15,11 +15,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+    <script type="text/javas cript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-2.2.4/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    
 
     <title>Document</title>
 </head>
@@ -84,10 +85,33 @@
     border-radius :50%;
     object-fit : cover ;
 }
-.scrollable-menu {
-    height: auto;
-    max-height: 200px;
-    overflow-x: hidden;
+.dropdown-menu {
+    max-height: 280px;
+    overflow-y: auto;
+}
+.noti-image  {
+  width:50px;
+    height : 50px;
+    border-radius :50%;
+    object-fit : cover ;
+
+}
+.uname-holder {
+  display : flex;
+}
+.full_name_holder {
+  font-size : 14px;
+}
+
+.etat_div {
+  font-size:13px;
+}
+.date_div {
+  font-size:12px;
+  color:grey;
+}
+.main-menu {
+        margin-top:90px;
 }
 </style>
 <?php
@@ -100,35 +124,64 @@ if(isset($_SESSION['username'])) {
     <img src="assets/imgs/general-icon.png" width="40" height="40" class="d-inline-block align-top" alt="">
     <span class="nav-text" style="font-family:'Titillium Web'"> PUERTO TRANSIT </span>
   </a>
+  
+  <!-- Drop down alert -->
   <span style=" display:flex ;justify-content:center">
-  <div class="dropdown mt-3">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="color:#fff">
-         <i class="fas fa-bell"></i> <span class="counter counter-lg">9</span>&nbsp;&nbsp<span class="caret"></span>
-        </button>
-        
+  <div class="dropdown">
+  <?php
+  if(isset($_SESSION['departement'])){
+    if($_SESSION['departement']==='IT'){
+      echo '
+      <li class="nav-item dropdown">
+      <a class="nav-link text-light"  style="margin-bottom :" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i style="font-size:22px;" class="fa fa-bell mb-5"><span class="counter counter-lg" id="notification-count" style="background-color:#ff2112;color:#fff; padding:5px; border-radius:50%;font-size:10px"></span>&nbsp;&nbsp;</i>
+      </a>
+      <ul class="dropdown-menu" style="width:300px !important">
+      <li class="head text-light bg-dark">
+      <div class="row">
+      <div class="col-lg-12 col-sm-12 col-12">
+      <a href="" class="float-right text-light"></a>
+      </div>
+      </li>
+    <li class="notification-box">
+    <div class="row" id="noti_parent"> <!-- Parent Row for notification data -->
+    
+    </div>
+    </li>
+      
+      ';
+    }
+  }
+  
+  ?>
+</ul>
+</li>
+
+
+
         <div class="dropdown-menu dropdown-menu-lg-right dropdown" aria-labelledby="navbarDropdownMenuLink-5">
-              <a class="dropdown-item waves-effect waves-light" href="#">l`etat de emploi : Test_user a changer</a>
     </div>
     </div>
   <div class="dropdown" style="padding-left: 0 100px">
-  <button class="btn btn-secondary dropdown-toggle" style='background:none;border : none;'type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button class="btn btn-secondary dropdown-toggle" style='background:none;border : none;margin-top:20px'type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <img id="login_photo" class="image-login" src="assets/imgs/default_login.png" alt="">
     <span class="user_id" style="color : #8391A3"> <?php echo $_SESSION['username'].' / '.$_SESSION['departement'];?></span>
   </button>
-  <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton" ">
-    <a class="dropdown-item hover-drop" href="logout.php" ">LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+  <div class="dropdown-menu mt-2 pr-1" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item hover-drop" href="logout.php" >LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
   </div>
     </span>
     </div>
     </div>
+  <!-- Drop down alert end -->
 
 </nav>
 
 
 
 <div class="area" ></div>
-<nav class="main-menu" style="z-index:1;flex-nowrap">
-            <ul>
+<nav class="main-menu" style="z-index:1;flex-nowrap;">
+             <ul>
                 <li>
                     <a href="index.php">
                         <i class="fa fa-home fa-2x"></i>
@@ -137,9 +190,7 @@ if(isset($_SESSION['username'])) {
                         </span>
                     </a>
                 </li>
-                <li>
-                  
-                </li>
+               
                 <?php
                 if(isset($_SESSION['departement'])){
                   if($_SESSION['departement'] === 'IT'){
@@ -155,7 +206,22 @@ if(isset($_SESSION['username'])) {
                     ';
                   }
                 }
-
+                ?>
+                <?php
+                  if(isset($_SESSION['departement'])){
+                    if ($_SESSION['departement']== 'QUALITY'){
+                    echo '
+                    <li class="has-subnav">
+                    <a href="action_damilioration.php">
+                        <i class="fa fa-folder-open fa-2x"></i>
+                        <span class="nav-text">
+                            Action D`amelioration
+                        </span>
+                    </a>
+                </li>
+                    ';
+                  }
+                }
                 ?>
                    <li class="has-subnav">
                     <a href="my_demands.php">
@@ -230,8 +296,14 @@ if(isset($_SESSION['username'])) {
                 <label for="recipient-name" class="col-form-label">CIN:</label>
                 <input type="text" class="form-control" placeholder="..." name="cin">
               </div>
+
               <div class="col-md-6">
-                <label for="recipient-name" class="col-form-label">Date ad\'embauche:</label>
+              <label for="recipient-name" class="col-form-label">Date de naissance</label>
+              <input type="date" class="form-control" placeholder="..." name="date_birth">
+            </div>
+
+              <div class="col-md-6">
+                <label for="recipient-name" class="col-form-label">Date d\'embauche:</label>
                 <input type="date" class="form-control" placeholder="..." name="date_em">
               </div>
             </div><!--  row end -->
@@ -273,8 +345,11 @@ if(isset($_SESSION['username'])) {
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Département : </label>
                 <select class="form-select"  name="departements">
-                  <option value="'.$_SESSION['departement'].'">'.$_SESSION['departement'].'</option>
-                </select>
+                <option value="IT">IT</option>
+                <option value="FINANCE">FINANCE</option>
+                <option value="RH">RH</option>
+                <option value="QUALITY">QUALITY</option>
+              </select>
               </div>
               <div class="col-md-6">
                 <label for="recipient-name" class="col-form-label">Bureaux : </label>
@@ -319,10 +394,8 @@ if(isset($_SESSION['username'])) {
                 <label for="recipient-name" class="col-form-label">Matricule</label>
                 <input type="text" class="form-control" name="matricule" id="matricule">
               </div>
-              <div class="col-md-6">
-              <label for="recipient-name" class="col-form-label">Photo</label>
-              <input type="file" class="form-control" placeholder="..." name="fileToUpload" id="fileToUpload">
-              </div>
+
+
             </div>
             <div class="row">
               <div class="col-md-6">
@@ -356,7 +429,10 @@ if(isset($_SESSION['username'])) {
                 <input type="date" class="form-control" name="date_em" id="date_em">
               </div>
               ';}echo'
-            
+              <div class="col-md-6">
+              <label for="recipient-name" class="col-form-label">Date de naissance</label>
+              <input type="date" class="form-control" placeholder="..." name="date_birth" id="date_birth">
+            </div>
             </div>
             <div class="row">
               <div class="col-md-6">
@@ -520,6 +596,53 @@ if(isset($_SESSION['username'])) {
 <!-- employee Status end -->
 
 
+
+
+
+
+<!-- Ban user -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      changement d'état de compte
+      <form method="POST" action="inc/change_account_state.php">
+        <div class="row">
+      <div class="row">
+        <div class="col-md-4">
+        <select class="form-select" name="state" aria-label="Default select example">
+            <option value="">active</option>
+            <option value="desactive">desactive</option>
+      </select>
+        </div>
+
+      </div>
+
+
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="hidden" id="send_matricule" name="matricule" value="">
+        <input type="submit" name="change_state"  class="btn btn-primary" value="Save changes">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Ban user end -->
+
+
   <div class="table-responsive mt-4">
      <table id="tab" class="display" cellspacing="0" width="100%">
         <thead>
@@ -531,6 +654,7 @@ if(isset($_SESSION['username'])) {
                 <th>L'état de employés</th>
                 <th>CIN</th>
                 <th>Email</th>
+                <th>Date de naissance</th>
                 <th>Date d'embauche</th>
 	            	<th>Address</th>
                 <th>Département</th>
@@ -541,6 +665,7 @@ if(isset($_SESSION['username'])) {
                 <th>Telephone</th>
                 <th>Fix :</th>
                 <th>extention</th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -562,6 +687,7 @@ if(isset($_SESSION['username'])) {
 }
 ?>
 
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
@@ -570,6 +696,15 @@ if(isset($_SESSION['username'])) {
 <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
 <script src="DataTables-Hide-Empty-Columns/dataTables.hideEmptyColumns.js"></script>
 <script src="DataTables-Hide-Empty-Columns/dataTables.hideEmptyColumns.min.js"></script>
+
+<?php if(isset($_SESSION['departement'])){
+  if($_SESSION['departement']==='IT'){
+    echo '<script src="load_notification.js"></script>';
+  }
+} ?>
+
+
+
 <script type="text/javascript">
   // inputs :
 let matricule = document.getElementById('matricule');
@@ -578,6 +713,7 @@ let firstname = document.getElementById('firstname');
 let secondname = document.getElementById("lastname");
 let cin = document.getElementById("cin");
 let email = document.getElementById('email');
+let date_birth = document.getElementById("date_birth");
 let date_em = document.getElementById("date_em");
 let address = document.getElementById("address");
 let departemenet = document.getElementById('departement');
@@ -593,41 +729,15 @@ let set_status = (elem)=>{
   hidden.value =  table_elements[0].innerText;
   // console.log(table_elements[0].innerText);
 }
+
+let set_mat = (elem)=>{
+  let matricule = elem.parentElement.parentElement.children[0].innerText ;
+  document.getElementById("send_matricule").value= matricule;
+}
 let edit = (elem)=>{
     let table_elements = elem.parentElement.parentElement.children ; 
     matricule.value =  table_elements[0].innerText;
-    switch(table_elements[9].innerText.toUpperCase()){
-        case 'FINANCE': 
-            departemenet.innerHTML = `
-            <select class="form-select"  id="departement" name="departements">
-                  <option selected disabled>Selectionner une Département</option>
-                  <option value="IT">IT</option>
-                  <option value="RH">RH</option>
-                  <option value="FINANCE" selected>FINANCE</option>
-                </select>
-            `
-            break;
-        case 'RH': 
-            departemenet.innerHTML = `
-            <select class="form-select"  id="departement" name="departements">
-                  <option selected disabled>Selectionner une Département</option>
-                  <option value="IT">IT</option>
-                  <option value="RH" selected>RH</option>
-                  <option value="FINANCE">Finance</option>
-                </select>
-            `;
-            break;
-        case 'IT': 
-            departemenet.innerHTML = `
-            <select class="form-select"  id="departement" name="departements">
-                  <option selected disabled>Selectionner une Département</option>
-                  <option value="IT" selected>IT</option>
-                  <option value="RH">RH</option>
-                  <option value="FINANCE">Finance</option>
-                </select>
-            `
-            break; 
-    }
+  
         function find(elm,data){
           for(let i=0;i < data.length;i++){
             if (data[i].matricule == elm){
@@ -655,13 +765,65 @@ let edit = (elem)=>{
         
         getData().then((data)=>{
           let s = find(table_elements[0].innerText,data);
+
+          switch(s.departement){
+        case 'FINANCE': 
+            departemenet.innerHTML = `
+            <select class="form-select"  id="departement" name="departements">
+                  <option selected disabled>Selectionner une Département</option>
+                  <option value="IT">IT</option>
+                  <option value="RH">RH</option>
+                  <option value="FINANCE" selected>FINANCE</option>
+                  <option value="QUALITY" selected>QUALITY</option>
+                </select>
+            `
+            break;
+        case 'RH': 
+            departemenet.innerHTML = `
+            <select class="form-select"  id="departement" name="departements">
+                  <option selected disabled>Selectionner une Département</option>
+                  <option value="IT">IT</option>
+                  <option value="RH" selected>RH</option>
+                  <option value="FINANCE">Finance</option>
+                  <option value="QUALITY" selected>QUALITY</option>
+                </select>
+            `;
+            break;
+        case 'IT': 
+            departemenet.innerHTML = `
+            <select class="form-select"  id="departement" name="departements">
+                  <option selected disabled>Selectionner une Département</option>
+                  <option value="IT" selected>IT</option>
+                  <option value="RH">RH</option>
+                  <option value="FINANCE">Finance</option>
+                  <option value="QUALITY" selected>QUALITY</option>
+                </select>
+            `
+            break;
+            case 'QUALITY': 
+            departemenet.innerHTML = `
+            <select class="form-select"  id="departement" name="departements">
+                  <option selected disabled>Selectionner une Département</option>
+                  <option value="IT">IT</option>
+                  <option value="RH">RH</option>
+                  <option value="FINANCE">Finance</option>
+                  <option value="QUALITY" selected>QUALITY</option>
+                </select>
+            `
+            break; 
+    }
+
+
+
+
           (firstname==null)?x=true:firstname.value=check_null(s.firstName);
           (secondname==null)?x=true:secondname.value=check_null(s.lastname);
           (cin==null)?x=true:cin.value=check_null(s.cin);
           (fonction==null)?x=true:fonction.value=check_null(s.fonction);
           (email==null)?x=true:email.value=check_null(s.email);
+          (date_birth==null)?x=true:date_birth.value=check_null(s.date_nessance);
           (date_em==null)?x=true:date_em.value=check_null(s.date_em);
-          (address==null)?x=true:address.value=check_null(s.date_em);
+          (address==null)?x=true:address.value=check_null(s.address);
           (post==null)?x=true:post.value=check_null(s.post);
           (burreaux==null)?x=true:burreaux.value=check_null(s.burreaux);
           (telephone==null)?x=true:telephone.value=check_null(s.phone_portable);
@@ -686,7 +848,7 @@ let remove = (elem)=>{
    $(document).ready(()=>{
         $("#tab").DataTable({
           stateSave:true,
-          scrollY:"200px",
+          scrollY:"600px",
           scrollX:"100%",
           hideEmptyCols: true,
           "responsive":true,
@@ -697,9 +859,11 @@ let remove = (elem)=>{
           },
           "columns":[
             {data:"matricule","render": function (data, type, row, meta ) {
-              if(row.etat==="active"){
-                return data;
+              if(row.etat==="active" || row.etat == null){
+               
+                return '<span style="color:#000">'+data+'</span>';
               }else {
+                
                 return '<span style="color:red">'+data+'</span';
               }
              } 
@@ -711,7 +875,7 @@ let remove = (elem)=>{
             },
             {data:"firstName",
               "render": function (data, type, row, meta ) {
-              if(row.etat==="active"){
+              if(row.etat==="active" || row.etat == null){
                 return data;
               }else {
                 return '<span style="color:red">'+data+'</span';
@@ -719,7 +883,7 @@ let remove = (elem)=>{
              }
             ,defaultContent:""},
             {data:"lastname","render": function (data, type, row, meta ) {
-              if(row.etat==="active"){
+              if(row.etat==="active" || row.etat == null){
                 return data;
               }else {
                 return '<span style="color:red">'+data+'</span';
@@ -733,7 +897,7 @@ let remove = (elem)=>{
               }
             },defaultContent:""},
             {data:"cin" ,"render": function (data, type, row, meta ) {
-              if(row.etat==="active"){
+              if(row.etat==="active" || row.etat == null){
                 return data;
               }else {
                 return '<span style="color:red">'+data+'</span';
@@ -748,15 +912,25 @@ let remove = (elem)=>{
                 return data;
               }
               },defaultContent:""},
+
+            {data:"date_nessance","render": function (data, type, row, meta ){
+              if(row.etat==="active" || row.etat == null){
+                return data;
+              }else {
+                return '<span style="color:red">'+data+'</span';
+              }
+            }
+          }
+            ,
             {data:"date_em","render": function (data, type, row, meta ) {
-              if(row.etat==="active"){
+              if(row.etat==="active" || row.etat == null){
                 return data;
               }else {
                 return '<span style="color:red">'+data+'</span';
               }
              } ,defaultContent:""},
             {data:"address","render": function (data, type, row, meta ) {
-              if(row.etat==="active"){
+              if(row.etat==="active" || row.etat == null){
                 return data;
               }else {
                 return '<span style="color:red">'+data+'</span';
@@ -764,14 +938,14 @@ let remove = (elem)=>{
              }
             ,defaultContent:""},
             {data:"departement","render": function (data, type, row, meta ) {
-              if(row.etat==="active"){
+              if(row.etat==="active" || row.etat == null){
                 return data;
               }else {
                 return '<span style="color:red">'+data+'</span';
               }
              },defaultContent:""},
             {data:"responsable_name" ,"render": function (data, type, row, meta ) {
-              if(row.etat==="active"){
+              if(row.etat==="active" || row.etat == null){
                 return data;
               }else {
                 return '<span style="color:red">'+data+'</span';
@@ -801,8 +975,8 @@ let remove = (elem)=>{
               }else if(row.etat!='active') {
                 return '<span style="color : red">'+data+'</span>';
               }else {
-                return data;
-              }
+                return '<span style="color:black">'+data+'</span>';
+                }
               },defaultContent:""},
             {data:"phone_portable","render":function(data,type,row,meta){
               if(data=='.....'){
@@ -838,7 +1012,7 @@ let remove = (elem)=>{
                 className: "dt-center editor-delete",
                 defaultContent: `
                 <?php if($_SESSION['permission'] != 'none'){
-                 echo '<i class="fa fa-pencil" onclick="edit(this)" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>';
+                 echo '<i class="fa fa-pencil btn btn-primary" onclick="edit(this)" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>';
                 }?>
                 
                 `,
@@ -851,24 +1025,34 @@ let remove = (elem)=>{
               <?php 
               
               if($_SESSION['departement']=='RH'){
-                echo '<i style="font-size:15px; color:#2d302e;cursor:pointer" onclick="set_status(this)" data-toggle="modal" data-target="#status_modal" class="fa-solid fa-user"></i>';
+                echo '<i style="font-size:15px; color:#2d302e;cursor:pointer" onclick="set_status(this)" data-toggle="modal" data-target="#status_modal" class="fa-solid fa-user btn btn-warning"></i>';
               }
               ?>
               `
             }
-            ,{
+            ,
+            
+            {data:null,
+              className: "dt-center editor-edit",
+                defaultContent: `<?php 
+                if($_SESSION['departement'] =='IT'){
+                  echo '<i style="font-size:15px; color:#2d302e;cursor:pointer" onclick="set_mat(this)" data-toggle="modal" data-target="#exampleModalLong" class="fa-solid fa-ban btn btn-warning"></i>';
+                }
+                ?>
+                `
+            },
+            {
                 data: null,
                 className: "dt-center editor-edit",
                 defaultContent: `
                 <?php if($_SESSION['permission'] != 'none'){
-                 echo '<i class="fa fa-trash" data-toggle="modal" onclick="remove(this)" data-target="#exampleModal3"/>';
+                 echo '<i class="fa fa-trash btn btn-danger" data-toggle="modal" onclick="remove(this)" data-target="#exampleModal3"/>';
                 }?>
-                
-                
                 
                 `,
                 orderable: false
-            }            
+            }
+
           ],  
         }
         )
@@ -896,6 +1080,10 @@ let url = "http://localhost/puertopme/inc/src.php";
     const names = await response.json();
    }
    loadNames();
+
+   $('notification-box').on('click', function (event) {
+    $(this).parent().toggleClass('open');
+});
 
 </script>
 </body>

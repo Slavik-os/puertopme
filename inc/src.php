@@ -8,7 +8,7 @@ $sql ="DROP TABLE IF EXISTS puerto_dbs.departments ;CREATE TABLE departments( SE
 $result = mysqli_query($con,$sql);
 if ($depr =='IT' || $depr == 'RH'   ) {
     $sql = "SELECT departments.firstName as responsable_name , employes_tbl.matricule,employes_tbl.username ,employes_tbl.photo,
-    employes_tbl.firstName ,employes_tbl.lastname,employes_tbl.etat ,employes_tbl.cin,employes_tbl.email,employes_tbl.date_em,
+    employes_tbl.firstName ,employes_tbl.lastname,employes_tbl.etat ,employes_tbl.cin,employes_tbl.date_nessance,employes_tbl.email,employes_tbl.date_em,
     employes_tbl.departement ,employes_tbl.fonction ,employes_tbl.burreaux ,employes_tbl.post ,
     employes_tbl.phone_portable,employes_tbl.phone_extenstion,employes_tbl.phone_fix,
     employes_tbl.address FROM departments INNER JOIN employes_tbl ON departments.departement = employes_tbl.departement";
@@ -33,9 +33,8 @@ if ($depr =='IT' || $depr == 'RH'   ) {
 
     // query to format
     $sql = "SELECT departments.firstName as responsable_name , employes_tbl.matricule ,employes_tbl.photo,
-    employes_tbl.firstName ,employes_tbl.lastname,employes_tbl.cin $p
+    employes_tbl.firstName ,employes_tbl.lastname,employes_tbl.date_nessance ,employes_tbl.cin $p
     employes_tbl.address FROM departments INNER JOIN employes_tbl  ON '$depr' = employes_tbl.departement";
-    
 }
 // echo $p;
 $result = mysqli_query($con,$sql);
@@ -44,6 +43,7 @@ $emparray = array();
 while($row = mysqli_fetch_assoc($result)){
     $emparray[] = $row; 
 }
+
 function unique_multidimensional_array($array, $key) {
     $temp_array = array();
     $i = 0;
@@ -59,12 +59,18 @@ function unique_multidimensional_array($array, $key) {
     return $temp_array;
 }
 
-$tmp_arr = [] ;
+
+$tmp_arr = array();
 foreach(unique_multidimensional_array($emparray,'matricule') as $em) {
     array_push($tmp_arr,$em);
+   
 }
+
+if($_SESSION['status'] ==='' || $_SESSION['status']===Null){
 print_r(json_encode($tmp_arr));
+
     }
+}
 }else {
     header("Location:404");
 }

@@ -214,6 +214,14 @@ if(isset($_SESSION['username'])) {
               </div>
 
               <div class="row mt-5">
+              <div class="col-md-12">
+                  <span>
+                  <label for="recipient-name" class="col-form-label bold-label">Justification  : </label>
+                  <label for="" id="justification"></label>
+                  </span>
+                </div>
+
+              </div>
                 <div class="col-md-4">
                   <span>
                   <label for="recipient-name" class="col-form-label bold-label">Date  : </label>
@@ -369,12 +377,12 @@ if(isset($_SESSION['username'])) {
             {
                 data: null,
                 className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-pencil" onclick="get_info(this)" id="edit" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>',
+                defaultContent: '<i class="fa fa-pencil btn btn-primary" onclick="get_info(this)" id="edit" data-toggle="modal" data-target="#exampleModal2" data-whatever="@fat"/>',
                 orderable: false
             },
         {data: null,
                 className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-trash" onclick="set_demand(this)" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat"/>',
+                defaultContent: '<i class="fa fa-trash btn btn-danger" onclick="set_demand(this)" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat"/>',
                 orderable: false}
           ],  
         }
@@ -406,15 +414,16 @@ let get_info= (elem)=>{
         let index = table.row(e.currentTarget).index();
         let current_data =  data_obj[index] ;
         console.log(current_data);
-        document.getElementById("full_name").innerHTML = current_data.firstName+' '+current_data.lastname;
-        document.getElementById("matricule_employee").innerHTML = current_data.matricule_employee;
-        document.getElementById("fonction").innerHTML = current_data.fonction;
-        document.getElementById("departement").innerHTML = current_data.departement;
-        document.getElementById("date_start").innerHTML = current_data.date_start;
-        document.getElementById("date_end").innerHTML = current_data.date_end;
-        document.getElementById("heur_start").innerHTML = current_data.heur_start;
-        document.getElementById("heur_end").innerHTML = current_data.heur_end;
-        document.getElementById("replacement").innerHTML = current_data.replacement;
+        document.getElementById("full_name").innerText = current_data.firstName+' '+current_data.lastname;
+        document.getElementById("matricule_employee").innerText = current_data.matricule_employee;
+        document.getElementById("fonction").innerText = current_data.fonction;
+        document.getElementById("departement").innerText = current_data.departement;
+        document.getElementById("justification").innerText = current_data.justification;
+        document.getElementById("date_start").innerText = current_data.date_start;
+        document.getElementById("date_end").innerText = current_data.date_end;
+        document.getElementById("heur_start").innerText = current_data.heur_start;
+        document.getElementById("heur_end").innerText = current_data.heur_end;
+        document.getElementById("replacement").innerText = current_data.replacement;
         document.getElementById("hiddenId").value = current_data.demands_id;
 
     });

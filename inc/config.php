@@ -1,4 +1,4 @@
 <?php
 session_start();
-$con=mysqli_connect("localhost","root","nomads","puerto_dbs"); /*Database Connection*/
+$con=mysqli_connect("localhost","root","","puerto_dbs"); /*Database Connection*/
 ?>

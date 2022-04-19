@@ -106,7 +106,7 @@ if(isset($_SESSION['username'])) {
 <nav class="main-menu" style="z-index:1;flex-nowrap">
             <ul>
                 <li>
-                    <a href="http://justinfarrow.com">
+                    <a href="home.php">
                         <i class="fa fa-home fa-2x"></i>
                         <span class="nav-text">
                             Dashboard
@@ -280,13 +280,6 @@ if(isset($_SESSION['username'])) {
 </form>
 <div>
 
-
-
-
-
-
-
-        
 <script>
     let redirect = (elem)=>{
         let e = $('#demands').val();
@@ -304,7 +297,7 @@ if(isset($_SESSION['username'])) {
 $(document).ready(()=>{
       
   $("#tab").DataTable({
-          scrollY:"200px",
+          scrollY:"400px",
           "responsive":true,
           "ajax":{
             'url':"inc/user_demands_ajax.php",
@@ -345,12 +338,12 @@ $(document).ready(()=>{
             {
                 data: null,
                 className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-trash" onclick="set_demand(this)" data-toggle="modal" data-target="#delete_modal" data-whatever="@fat"/>',
+                defaultContent: '<i class="fa fa-trash btn btn-danger" onclick="set_demand(this)" data-toggle="modal" data-target="#delete_modal" data-whatever="@fat"/>',
                 orderable: false
             },{
             data: null,
                 className: "dt-center editor-delete",
-                defaultContent: '<i class="fa fa-info"  data-toggle="modal" onclick="getType(this)" data-whatever="@fat"/>',
+                defaultContent: '<i class="fa fa-info btn btn-info"  data-toggle="modal" onclick="getType(this)" data-whatever="@fat"/>',
                 orderable: false}
           ],
         }
@@ -401,6 +394,7 @@ $(document).ready(function(){
 
   let getType = (elem)=>{
   let type = elem.parentElement.parentElement.children[1].innerText;
+  console.log(type);
   let demand_id = elem.parentElement.parentElement.children[0].innerText;
   var g_data = [];
   fetch('inc/user_demands_ajax.php').then(response => response.json())
@@ -410,7 +404,6 @@ $(document).ready(function(){
 
     switch(type){
       case 'DEMAND DABSENCE.':
-        console.log(result);
         w.document.writeln(conge(result));        
       break;
       case 'DEMANDE DE CONGE' :
